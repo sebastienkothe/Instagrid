@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36259BBE244DA2D000B01906 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36259BBD244DA2D000B01906 /* Grid.swift */; };
 		362DD56D244B60E200E3A6F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362DD56C244B60E200E3A6F7 /* AppDelegate.swift */; };
 		362DD56F244B60E200E3A6F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362DD56E244B60E200E3A6F7 /* SceneDelegate.swift */; };
 		362DD571244B60E200E3A6F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362DD570244B60E200E3A6F7 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		36259BBD244DA2D000B01906 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		362DD569244B60E200E3A6F7 /* P4_01_Xcode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = P4_01_Xcode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		362DD56C244B60E200E3A6F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		362DD56E244B60E200E3A6F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,15 +58,48 @@
 		362DD56B244B60E200E3A6F7 /* P4_01_Xcode */ = {
 			isa = PBXGroup;
 			children = (
-				362DD56C244B60E200E3A6F7 /* AppDelegate.swift */,
-				362DD56E244B60E200E3A6F7 /* SceneDelegate.swift */,
-				362DD570244B60E200E3A6F7 /* ViewController.swift */,
+				362DD580244B60FD00E3A6F7 /* Model */,
+				362DD581244B610A00E3A6F7 /* View */,
+				362DD582244B611200E3A6F7 /* Controller */,
+				362DD584244B69C700E3A6F7 /* Supporting_Files */,
+			);
+			path = P4_01_Xcode;
+			sourceTree = "<group>";
+		};
+		362DD580244B60FD00E3A6F7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		362DD581244B610A00E3A6F7 /* View */ = {
+			isa = PBXGroup;
+			children = (
 				362DD572244B60E200E3A6F7 /* Main.storyboard */,
+				36259BBD244DA2D000B01906 /* Grid.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		362DD582244B611200E3A6F7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				362DD570244B60E200E3A6F7 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		362DD584244B69C700E3A6F7 /* Supporting_Files */ = {
+			isa = PBXGroup;
+			children = (
+				362DD56E244B60E200E3A6F7 /* SceneDelegate.swift */,
+				362DD56C244B60E200E3A6F7 /* AppDelegate.swift */,
 				362DD575244B60E800E3A6F7 /* Assets.xcassets */,
 				362DD577244B60E800E3A6F7 /* LaunchScreen.storyboard */,
 				362DD57A244B60E800E3A6F7 /* Info.plist */,
 			);
-			path = P4_01_Xcode;
+			path = Supporting_Files;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +176,7 @@
 				362DD571244B60E200E3A6F7 /* ViewController.swift in Sources */,
 				362DD56D244B60E200E3A6F7 /* AppDelegate.swift in Sources */,
 				362DD56F244B60E200E3A6F7 /* SceneDelegate.swift in Sources */,
+				36259BBE244DA2D000B01906 /* Grid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +322,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3CQSNJZ5Q2;
-				INFOPLIST_FILE = P4_01_Xcode/Info.plist;
+				INFOPLIST_FILE = P4_01_Xcode/Supporting_Files/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -294,7 +331,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "fr.sebastienkothe.P4-01-Xcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -304,7 +341,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3CQSNJZ5Q2;
-				INFOPLIST_FILE = P4_01_Xcode/Info.plist;
+				INFOPLIST_FILE = P4_01_Xcode/Supporting_Files/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -312,7 +350,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "fr.sebastienkothe.P4-01-Xcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
