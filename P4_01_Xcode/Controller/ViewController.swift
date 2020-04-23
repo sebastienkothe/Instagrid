@@ -8,8 +8,15 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+/* ViewController class must conform to the protocols : UIImagePickerControllerDelegate and UINavigationControllerDelegate to handle the camera and photo library */
+
+class ViewController: UIViewController {
+    
+    // Represents to width of the screen
     let screenWidth = UIScreen.main.bounds.width
+    
+    // UIImagePickerController object
+    var imagePicker = UIImagePickerController()
     
     // Instagrid Label
     @IBOutlet weak var instagridLabel: UILabel!
@@ -41,37 +48,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            
-            let picker = UIImagePickerController()
-            picker.delegate = self
-            // Resizing and cropping the photo if true
-            picker.allowsEditing = true
-            picker.sourceType = .camera
-            present(picker, animated: true, completion: nil)
-
-        }
-        
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            
-            let picker = UIImagePickerController()
-            picker.delegate = self
-            picker.allowsEditing = true
-            picker.sourceType = .photoLibrary
-            present(picker, animated: true, completion: nil)
-
-        }
-        
-        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
-            
-            let picker = UIImagePickerController()
-            picker.delegate = self
-            picker.allowsEditing = true
-            picker.sourceType = .savedPhotosAlbum
-            present(picker, animated: true, completion: nil)
-            
-        }
-        
     }
     
+}
+
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let pictureEdited = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            image1.image = pictureEdited
+        }
+    }
 }
