@@ -24,7 +24,7 @@ class CameraHandler: NSObject{
     
     //MARK: Internal Properties
     var imagePickedBlock: ((UIImage) -> Void)?
-
+    
     func camera()
     {
         if UIImagePickerController.isSourceTypeAvailable(.camera){
@@ -76,12 +76,16 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                   self.imagePickedBlock?(image)
-               }else{
-                   print("Something went wrong")
-               }
-               currentVC.dismiss(animated: true, completion: nil)
+            self.imagePickedBlock?(image)
+        }
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.imagePickedBlock?(image)
+        }
+        
+        currentVC.dismiss(animated: true, completion: nil)
     }
     
 }
