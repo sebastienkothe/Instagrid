@@ -22,13 +22,11 @@ class ViewController: UIViewController {
     // Blue main square
     @IBOutlet weak var mainSquare: UIView!
     
-    // Blocks
-    @IBOutlet weak var block1: UIView!
-    
     // Images
     @IBOutlet weak var imageView1: UIImageView!
     @IBOutlet weak var imageView2: UIImageView!
     @IBOutlet weak var imageView3: UIImageView!
+    
     
     // Plus image
     @IBOutlet weak var plus1: UIImageView!
@@ -37,15 +35,14 @@ class ViewController: UIViewController {
     
     // Buttons
     @IBAction func changeGridToConfig1(_ sender: Any) {
-        
     }
     
     @IBAction func changeGridToConfig2(_ sender: Any) {
-
+        
     }
     
     @IBAction func changeGridToConfig3(_ sender: Any) {
-
+        
     }
     
     @objc func addPhotoToImageView1() {
@@ -87,16 +84,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-      // To handle the gesture on
-          let tapGestureImageView1 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView1))
-          imageView1.addGestureRecognizer(tapGestureImageView1)
-          
-          let tapGestureImageView2 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView2))
-          imageView2.addGestureRecognizer(tapGestureImageView2)
-          
-          let tapGestureImageView3 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView3))
-          imageView3.addGestureRecognizer(tapGestureImageView3)
-      
+        let gestureImageView1 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView1))
+        imageView1.addGestureRecognizer(gestureImageView1)
+        
+        let gestureImageView2 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView2))
+        imageView2.addGestureRecognizer(gestureImageView2)
+        
+        let gestureImageView3 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView3))
+        imageView3.addGestureRecognizer(gestureImageView3)
     }
     
 }
