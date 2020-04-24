@@ -15,9 +15,6 @@ class ViewController: UIViewController {
     // Represents to width of the screen
     let screenWidth = UIScreen.main.bounds.width
     
-    // UIImagePickerController object
-    var imagePicker = UIImagePickerController()
-    
     // Instagrid Label
     @IBOutlet weak var instagridLabel: UILabel!
     
@@ -39,10 +36,30 @@ class ViewController: UIViewController {
     
     // Buttons
     @IBAction func changeGridToConfig1(_ sender: Any) {
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            /* get your image here */
+            self.image1.image = image
+            self.plus1.isHidden = true
+        }
     }
+    
     @IBAction func changeGridToConfig2(_ sender: Any) {
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            /* get your image here */
+            self.image2.image = image
+            self.plus2.isHidden = true
+        }
     }
+    
     @IBAction func changeGridToConfig3(_ sender: Any) {
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            /* get your image here */
+            self.image3.image = image
+            self.plus3.isHidden = true
+        }
     }
     
     override func viewDidLoad() {
@@ -50,14 +67,4 @@ class ViewController: UIViewController {
         
     }
     
-}
-
-extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        if let pictureEdited = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            image1.image = pictureEdited
-        }
-    }
 }
