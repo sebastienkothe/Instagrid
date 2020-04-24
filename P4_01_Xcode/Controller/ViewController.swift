@@ -8,44 +8,34 @@
 
 import UIKit
 
-/* ViewController class must conform to the protocols : UIImagePickerControllerDelegate and UINavigationControllerDelegate to handle the camera and photo library */
-
 class ViewController: UIViewController {
     
+    // MARK: - Private properties
+    private let screenWidth = UIScreen.main.bounds.width
     
-    // Width of the screen
-    let screenWidth = UIScreen.main.bounds.width
+    @IBOutlet private weak var instagridLabel: UILabel!
+    @IBOutlet private weak var mainSquare: UIView!
+    @IBOutlet private weak var imageView1: UIImageView!
+    @IBOutlet private weak var imageView2: UIImageView!
+    @IBOutlet private weak var imageView3: UIImageView!
+    @IBOutlet private weak var plus1: UIImageView!
+    @IBOutlet private weak var plus2: UIImageView!
+    @IBOutlet private weak var plus3: UIImageView!
     
-    // Instagrid Label
-    @IBOutlet weak var instagridLabel: UILabel!
-    
-    // Blue main square
-    @IBOutlet weak var mainSquare: UIView!
-    
-    // Images
-    @IBOutlet weak var imageView1: UIImageView!
-    @IBOutlet weak var imageView2: UIImageView!
-    @IBOutlet weak var imageView3: UIImageView!
-    
-    
-    // Plus image
-    @IBOutlet weak var plus1: UIImageView!
-    @IBOutlet weak var plus2: UIImageView!
-    @IBOutlet weak var plus3: UIImageView!
-    
-    // Buttons
-    @IBAction func changeGridToConfig1(_ sender: Any) {
-    }
-    
-    @IBAction func changeGridToConfig2(_ sender: Any) {
+    // MARK: - Private methods
+    @IBAction private func changeGridToConfig1(_ sender: Any) {
         
     }
     
-    @IBAction func changeGridToConfig3(_ sender: Any) {
+    @IBAction private func changeGridToConfig2(_ sender: Any) {
         
     }
     
-    @objc func addPhotoToImageView1() {
+    @IBAction private func changeGridToConfig3(_ sender: Any) {
+        
+    }
+    
+    @objc private func addPhotoToImageView1() {
         imageView1.isUserInteractionEnabled = true
         imageView1.contentMode = .scaleAspectFill
         
@@ -57,7 +47,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func addPhotoToImageView2() {
+    @objc private func addPhotoToImageView2() {
         imageView2.isUserInteractionEnabled = true
         imageView2.contentMode = .scaleAspectFill
         
@@ -69,7 +59,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func addPhotoToImageView3() {
+    @objc private func addPhotoToImageView3() {
         imageView3.isUserInteractionEnabled = true
         imageView3.contentMode = .scaleAspectFill
         
@@ -81,7 +71,8 @@ class ViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
+    // MARK: - Internal methods
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         
         let gestureImageView1 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView1))

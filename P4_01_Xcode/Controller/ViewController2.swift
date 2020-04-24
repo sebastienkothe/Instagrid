@@ -9,15 +9,55 @@
 import UIKit
 
 class ViewController2: UIViewController {
-    @IBOutlet weak var imageView4: UIImageView!
-    @IBOutlet weak var imageView5: UIImageView!
-    @IBOutlet weak var imageView6: UIImageView!
     
-    @IBOutlet weak var plus4: UIImageView!
-    @IBOutlet weak var plus5: UIImageView!
-    @IBOutlet weak var plus6: UIImageView!
+    // MARK: - Private properties
+    @IBOutlet private weak var imageView4: UIImageView!
+    @IBOutlet private weak var imageView5: UIImageView!
+    @IBOutlet private weak var imageView6: UIImageView!
     
-    override func viewDidLoad() {
+    @IBOutlet private weak var plus4: UIImageView!
+    @IBOutlet private weak var plus5: UIImageView!
+    @IBOutlet private weak var plus6: UIImageView!
+    
+    // MARK: - Private methods
+    @objc private func addPhotoToImageView4() {
+        imageView4.isUserInteractionEnabled = true
+        imageView4.contentMode = .scaleAspectFill
+        
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            /* get your image here */
+            self.imageView4.image = image
+            self.plus4.isHidden = true
+        }
+    }
+    
+    @objc private func addPhotoToImageView5() {
+        imageView5.isUserInteractionEnabled = true
+        imageView5.contentMode = .scaleAspectFill
+        
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            /* get your image here */
+            self.imageView5.image = image
+            self.plus5.isHidden = true
+        }
+    }
+    
+    @objc private func addPhotoToImageView6() {
+        imageView6.isUserInteractionEnabled = true
+        imageView6.contentMode = .scaleAspectFill
+        
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            /* get your image here */
+            self.imageView6.image = image
+            self.plus6.isHidden = true
+        }
+    }
+    
+    // MARK: - Internal methods
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         
         let gestureImageView4 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView4))
@@ -31,39 +71,5 @@ class ViewController2: UIViewController {
         
     }
     
-    @objc func addPhotoToImageView4() {
-        imageView4.isUserInteractionEnabled = true
-        imageView4.contentMode = .scaleAspectFill
-        
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
-            /* get your image here */
-            self.imageView4.image = image
-            self.plus4.isHidden = true
-        }
-    }
     
-    @objc func addPhotoToImageView5() {
-        imageView5.isUserInteractionEnabled = true
-        imageView5.contentMode = .scaleAspectFill
-        
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
-            /* get your image here */
-            self.imageView5.image = image
-            self.plus5.isHidden = true
-        }
-    }
-    
-    @objc func addPhotoToImageView6() {
-        imageView6.isUserInteractionEnabled = true
-        imageView6.contentMode = .scaleAspectFill
-        
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
-            /* get your image here */
-            self.imageView6.image = image
-            self.plus6.isHidden = true
-        }
-    }
 }

@@ -16,17 +16,10 @@
 import Foundation
 import UIKit
 
-
 class CameraHandler: NSObject{
-    static let shared = CameraHandler()
     
-    fileprivate var currentVC: UIViewController!
-    
-    //MARK: Internal Properties
-    var imagePickedBlock: ((UIImage) -> Void)?
-    
-    func camera()
-    {
+    //MARK: Private methods
+    private func camera() {
         if UIImagePickerController.isSourceTypeAvailable(.camera){
             let myPickerController = UIImagePickerController()
             myPickerController.delegate = self;
@@ -34,12 +27,9 @@ class CameraHandler: NSObject{
             myPickerController.allowsEditing = true
             currentVC.present(myPickerController, animated: true, completion: nil)
         }
-        
     }
     
-    func photoLibrary()
-    {
-        
+    private func photoLibrary() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             let myPickerController = UIImagePickerController()
             myPickerController.delegate = self;
@@ -50,6 +40,14 @@ class CameraHandler: NSObject{
         
     }
     
+    //MARK: File private Properties
+    fileprivate var currentVC: UIViewController!
+    
+    //MARK: Internal Properties
+    static let shared = CameraHandler()
+    var imagePickedBlock: ((UIImage) -> Void)?
+    
+    // MARK: - Internal methods
     func showActionSheet(vc: UIViewController) {
         currentVC = vc
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -69,13 +67,12 @@ class CameraHandler: NSObject{
     
 }
 
-
 extension CameraHandler: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         currentVC.dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.imagePickedBlock?(image)

@@ -120,6 +120,7 @@
                                         <state key="normal" backgroundImage="Layout 1"/>
                                         <connections>
                                             <action selector="changeGridToConfig1:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GGZ-yD-ffr"/>
+                                            <segue destination="a0Y-k5-rN1" kind="show" id="9UE-cN-EOm"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ac-3a-cf2" userLabel="BottomButton2">
@@ -140,6 +141,7 @@
                                         <state key="normal" backgroundImage="Layout 3"/>
                                         <connections>
                                             <action selector="changeGridToConfig3:" destination="BYZ-38-t0r" eventType="touchUpInside" id="f9e-zA-EGB"/>
+                                            <segue destination="9JD-pU-q84" kind="show" id="npf-CW-Ots"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -337,6 +339,9 @@
                                             <constraint firstAttribute="width" secondItem="XXn-1M-eMX" secondAttribute="height" multiplier="1:1" id="FUi-Ni-vQ2"/>
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 1"/>
+                                        <connections>
+                                            <segue destination="a0Y-k5-rN1" kind="show" id="SW2-Jv-Ju3"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3il-aY-skN" userLabel="BottomButton8">
                                         <rect key="frame" x="95" y="0.0" width="80" height="80"/>
@@ -344,6 +349,9 @@
                                             <constraint firstAttribute="width" secondItem="3il-aY-skN" secondAttribute="height" multiplier="1:1" id="TEP-hJ-Vn8"/>
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 2"/>
+                                        <connections>
+                                            <segue destination="BYZ-38-t0r" kind="show" id="Uce-wa-Q7v"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fhd-WH-lep" userLabel="BottomButton9">
                                         <rect key="frame" x="190" y="0.0" width="80" height="80"/>
@@ -529,6 +537,9 @@
                                             <constraint firstAttribute="width" secondItem="tj4-3n-hMj" secondAttribute="height" multiplier="1:1" id="Zru-pR-bDS"/>
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 2"/>
+                                        <connections>
+                                            <segue destination="BYZ-38-t0r" kind="show" id="gG8-P1-aSu"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fHx-I4-a0S" userLabel="BottomButton6">
                                         <rect key="frame" x="190" y="0.0" width="80" height="80"/>
@@ -536,6 +547,9 @@
                                             <constraint firstAttribute="width" secondItem="fHx-I4-a0S" secondAttribute="height" multiplier="1:1" id="ce5-c4-Uzy"/>
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 3"/>
+                                        <connections>
+                                            <segue destination="9JD-pU-q84" kind="show" id="TYL-7B-dfP"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -594,6 +608,11 @@
             <point key="canvasLocation" x="1442" y="1189"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="SW2-Jv-Ju3"/>
+        <segue reference="TYL-7B-dfP"/>
+        <segue reference="Uce-wa-Q7v"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="Arrow Up" width="4.5" height="3.5"/>
         <image name="Layout 1" width="27" height="27"/>
