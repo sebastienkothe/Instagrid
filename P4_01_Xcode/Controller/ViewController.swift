@@ -71,6 +71,7 @@ class ViewController: UIViewController {
         }
     }
     
+    
     // MARK: - Internal methods
     override internal func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +84,10 @@ class ViewController: UIViewController {
         
         let gestureImageView3 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView3))
         imageView3.addGestureRecognizer(gestureImageView3)
+        
+        /* let swipeGestureVC1 = UISwipeGestureRecognizer(target: self, action: #selector())
+        view.addGestureRecognizer(swipeGestureVC1) */
+        
     }
     
 }

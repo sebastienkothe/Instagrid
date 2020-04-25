@@ -120,7 +120,7 @@
                                         <state key="normal" backgroundImage="Layout 1"/>
                                         <connections>
                                             <action selector="changeGridToConfig1:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GGZ-yD-ffr"/>
-                                            <segue destination="a0Y-k5-rN1" kind="show" id="9UE-cN-EOm"/>
+                                            <segue destination="a0Y-k5-rN1" kind="show" animates="NO" id="9UE-cN-EOm"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ac-3a-cf2" userLabel="BottomButton2">
@@ -141,7 +141,7 @@
                                         <state key="normal" backgroundImage="Layout 3"/>
                                         <connections>
                                             <action selector="changeGridToConfig3:" destination="BYZ-38-t0r" eventType="touchUpInside" id="f9e-zA-EGB"/>
-                                            <segue destination="9JD-pU-q84" kind="show" id="npf-CW-Ots"/>
+                                            <segue destination="9JD-pU-q84" kind="show" animates="NO" id="npf-CW-Ots"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -200,7 +200,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1086" y="2230"/>
+            <point key="canvasLocation" x="-532" y="1997"/>
         </scene>
         <!--View Controller3-->
         <scene sceneID="k2K-rr-N8L">
@@ -340,7 +340,7 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 1"/>
                                         <connections>
-                                            <segue destination="a0Y-k5-rN1" kind="show" id="SW2-Jv-Ju3"/>
+                                            <segue destination="a0Y-k5-rN1" kind="show" animates="NO" id="SW2-Jv-Ju3"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3il-aY-skN" userLabel="BottomButton8">
@@ -350,7 +350,7 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 2"/>
                                         <connections>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="Uce-wa-Q7v"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="Uce-wa-Q7v"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fhd-WH-lep" userLabel="BottomButton9">
@@ -395,8 +395,8 @@
                             <constraint firstItem="wYB-kU-Sld" firstAttribute="centerX" secondItem="Bot-zy-Nc8" secondAttribute="centerX" id="Rjw-y1-E2W"/>
                             <constraint firstItem="cR8-Tx-soj" firstAttribute="width" secondItem="cR8-Tx-soj" secondAttribute="height" multiplier="1:1" id="UTz-bB-6nY"/>
                             <constraint firstItem="XXn-1M-eMX" firstAttribute="width" secondItem="cR8-Tx-soj" secondAttribute="width" multiplier="0.2589" id="X5t-ru-fqD"/>
-                            <constraint firstItem="cR8-Tx-soj" firstAttribute="centerX" secondItem="JKJ-5I-tPd" secondAttribute="centerX" id="dwK-ca-gSB"/>
-                            <constraint firstItem="cR8-Tx-soj" firstAttribute="centerY" secondItem="JKJ-5I-tPd" secondAttribute="centerY" id="kh8-Qw-5LP"/>
+                            <constraint firstItem="cR8-Tx-soj" firstAttribute="centerX" secondItem="Bot-zy-Nc8" secondAttribute="centerX" id="dwK-ca-gSB"/>
+                            <constraint firstItem="cR8-Tx-soj" firstAttribute="centerY" secondItem="Bot-zy-Nc8" secondAttribute="centerY" id="kh8-Qw-5LP"/>
                             <constraint firstItem="PN2-E8-BsW" firstAttribute="centerX" secondItem="Bot-zy-Nc8" secondAttribute="centerX" id="pZX-hx-a3j"/>
                             <constraint firstItem="cR8-Tx-soj" firstAttribute="top" secondItem="zHL-11-d0j" secondAttribute="bottom" constant="10" id="poT-ol-ssI"/>
                             <constraint firstItem="Bot-zy-Nc8" firstAttribute="bottom" secondItem="PN2-E8-BsW" secondAttribute="bottom" constant="15" id="qNK-6I-f30"/>
@@ -417,7 +417,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g0J-WP-6QJ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2647" y="1772"/>
+            <point key="canvasLocation" x="276" y="1997"/>
         </scene>
         <!--View Controller2-->
         <scene sceneID="lB6-wV-FY5">
@@ -538,7 +538,7 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 2"/>
                                         <connections>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="gG8-P1-aSu"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="gG8-P1-aSu"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fHx-I4-a0S" userLabel="BottomButton6">
@@ -548,7 +548,7 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 3"/>
                                         <connections>
-                                            <segue destination="9JD-pU-q84" kind="show" id="TYL-7B-dfP"/>
+                                            <segue destination="9JD-pU-q84" kind="show" animates="NO" id="TYL-7B-dfP"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -580,7 +580,7 @@
                         <color key="backgroundColor" red="0.71991002559999995" green="0.84260118009999996" blue="0.89804273840000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="sSt-2k-vX7" firstAttribute="width" secondItem="WUa-sy-9BJ" secondAttribute="width" multiplier="0.03" id="1oA-9N-hhb"/>
-                            <constraint firstItem="uN3-a0-tqq" firstAttribute="centerY" secondItem="WUa-sy-9BJ" secondAttribute="centerY" id="BIr-7z-jks"/>
+                            <constraint firstItem="uN3-a0-tqq" firstAttribute="centerY" secondItem="SDw-yJ-6bb" secondAttribute="centerY" id="BIr-7z-jks"/>
                             <constraint firstItem="uN3-a0-tqq" firstAttribute="top" secondItem="quE-fq-da4" secondAttribute="bottom" constant="10" id="PHC-XH-RyE"/>
                             <constraint firstItem="uN3-a0-tqq" firstAttribute="width" secondItem="SDw-yJ-6bb" secondAttribute="width" multiplier="0.824" id="U8C-M9-OGo"/>
                             <constraint firstItem="SDw-yJ-6bb" firstAttribute="bottom" secondItem="WPI-kd-NU1" secondAttribute="bottom" constant="15" id="Uwp-VG-PhA"/>
@@ -605,13 +605,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k3a-Dl-Ouw" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1442" y="1189"/>
+            <point key="canvasLocation" x="-1548" y="1996.5517241379312"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="9UE-cN-EOm"/>
-        <segue reference="TYL-7B-dfP"/>
-        <segue reference="gG8-P1-aSu"/>
+        <segue reference="SW2-Jv-Ju3"/>
+        <segue reference="npf-CW-Ots"/>
+        <segue reference="Uce-wa-Q7v"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Arrow Up" width="4.5" height="3.5"/>
