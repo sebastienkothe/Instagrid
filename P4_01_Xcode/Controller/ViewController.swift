@@ -10,15 +10,31 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    // MARK: - File private methods
-    fileprivate func setupGridLayoutView(layout: PhotoLayout) {
+    // MARK: - Private properties
+    private let photoLayoutProvider = PhotoLayoutProvider()
+    
+    @IBOutlet private weak var topStackView: UIStackView!
+    @IBOutlet private weak var botStackView: UIStackView!
+    
+    @IBOutlet weak var buttonForChangeGridToReverseConfig: UIButton!
+    @IBOutlet weak var buttonForChangeGridToDefaultConfig: UIButton!
+    @IBOutlet weak var buttonForChangeGridToCrossConfig: UIButton!
+    
+    
+    private var whiteViews: [UIView] = []
+    private var imageViews: [UIImageView] = []
+    private var plusImageViews: [UIImageView] = []
+    
+    // MARK: - Private methods
+    private func setupGridLayoutView(layout: PhotoLayout) {
         
-        addButtonViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
-        addButtonViewsTo(stackView: botStackView, numberOfViews: layout.numberOfBotView)
+        addWhiteViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
+        addWhiteViewsTo(stackView: botStackView, numberOfViews: layout.numberOfBotView)
         
     }
     
-    fileprivate func cleanGridLayoutView() {
+    private func cleanGridLayoutView() {
+        
         for view in topStackView.arrangedSubviews {
             topStackView.removeArrangedSubview(view)
         }
@@ -26,45 +42,107 @@ class ViewController: UIViewController {
         for view in botStackView.arrangedSubviews {
             botStackView.removeArrangedSubview(view)
         }
+        
+        for plusImageViews in plusImageViews {
+            plusImageViews.removeFromSuperview()
+        }
+        
+        for imageView in imageViews {
+            imageView.removeFromSuperview()
+        }
+        
     }
     
-    // MARK: - Private properties
-    private let photoLayoutProvider = PhotoLayoutProvider()
-    
-    @IBOutlet private weak var topStackView: UIStackView!
-    @IBOutlet private weak var botStackView: UIStackView!
-    
-    // MARK: - Private methods
-    private func addButtonViewsTo(stackView: UIStackView, numberOfViews: Int) {
+    private func addWhiteViewsTo(stackView: UIStackView, numberOfViews: Int) {
+        
         for _ in 1...numberOfViews {
             let whiteView = UIView()
             whiteView.backgroundColor = .white
             stackView.addArrangedSubview(whiteView)
+            
+            // Add my white views in [whiteViews]
+            whiteViews.append(whiteView)
+            
+            addImageViewTo(whiteView: whiteView)
+            
         }
+        
     }
+    
+    fileprivate func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            //constraints here
+            imageView.centerXAnchor.constraint(equalTo: whiteView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: whiteView.centerYAnchor), imageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor), imageView.heightAnchor.constraint(equalTo: whiteView.heightAnchor)
+        ])
+    }
+    
+    private func addImageViewTo(whiteView: UIView) {
+        let imageView = UIImageView()
+        whiteView.addSubview(imageView)
         
-    @IBAction private func changeGridToConfig1(_ sender: Any) {
+        imageViews.append(imageView)
+        imageView.contentMode = .scaleAspectFill
         
+        imageView.backgroundColor = .cyan
+        
+        addPlusImageTo(imageView)
+        setupImageView(imageView, whiteView)
+    }
+    
+    
+    
+    private func addPlusImageTo(_ view: UIView) {
+        
+        let plusImageView = UIImageView()
+        view.addSubview(plusImageView)
+        plusImageView.image = UIImage(named: "Plus")
+        
+        plusImageViews.append(plusImageView)
+        setupPlusImageViews(plusImageView, view)
+        
+    }
+    
+    fileprivate func setupPlusImageViews(_ plusImageView: UIImageView, _ view: UIView) {
+        
+        plusImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            //constraints here
+            plusImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            plusImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor), plusImageView.widthAnchor.constraint(equalToConstant: 40), plusImageView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+    }
+    
+    private func hide(_ element: UIView) {
+        element.isHidden = true
+    }
+    
+    @IBAction private func changeGridToReverseConfig(_ sender: Any) {
         cleanGridLayoutView()
         
         let layout = photoLayoutProvider.photoLayouts[0]
         setupGridLayoutView(layout: layout)
-        
     }
     
-    @IBAction private func changeGridToConfig2(_ sender: Any) {
+    @IBAction private func cchangeGridToDefaultConfig(_ sender: Any) {
+        
         cleanGridLayoutView()
         
         let layout = photoLayoutProvider.photoLayouts[1]
         setupGridLayoutView(layout: layout)
+        
     }
     
-    @IBAction private func changeGridToConfig3(_ sender: Any) {
+    @IBAction private func changeGridToCrossConfig(_ sender: Any) {
+        
         cleanGridLayoutView()
         
         let layout = photoLayoutProvider.photoLayouts[2]
         setupGridLayoutView(layout: layout)
     }
+    
     
     @objc private func addPhotoToImageView1(imageView: UIImageView) {
         imageView.isUserInteractionEnabled = true

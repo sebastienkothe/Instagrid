@@ -49,7 +49,7 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 1"/>
                                         <connections>
-                                            <action selector="changeGridToConfig1:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GGZ-yD-ffr"/>
+                                            <action selector="changeGridToReverseConfig:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3JO-Bz-Qdf"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ac-3a-cf2" userLabel="BottomButton2">
@@ -59,7 +59,7 @@
                                         </constraints>
                                         <state key="normal" image="Selected" backgroundImage="Layout 2"/>
                                         <connections>
-                                            <action selector="changeGridToConfig2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hA0-2c-Lvu"/>
+                                            <action selector="cchangeGridToDefaultConfig:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zVW-Hn-GG1"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DNH-vI-7f8" userLabel="BottomButton3">
@@ -69,7 +69,7 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="Layout 3"/>
                                         <connections>
-                                            <action selector="changeGridToConfig3:" destination="BYZ-38-t0r" eventType="touchUpInside" id="f9e-zA-EGB"/>
+                                            <action selector="changeGridToCrossConfig:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SLU-kM-NiC"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -117,12 +117,15 @@
                     <navigationItem key="navigationItem" id="ief-ZJ-wdd"/>
                     <connections>
                         <outlet property="botStackView" destination="hoE-HZ-9yN" id="uMw-Fl-I5n"/>
+                        <outlet property="buttonForChangeGridToCrossConfig" destination="DNH-vI-7f8" id="cBH-4i-hcS"/>
+                        <outlet property="buttonForChangeGridToDefaultConfig" destination="7Ac-3a-cf2" id="VUL-lF-9JC"/>
+                        <outlet property="buttonForChangeGridToReverseConfig" destination="alI-gO-13C" id="X33-aV-6sM"/>
                         <outlet property="topStackView" destination="xHC-GO-MFG" id="goj-jJ-iQK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-588" y="1997"/>
+            <point key="canvasLocation" x="-319" y="2001"/>
         </scene>
     </scenes>
     <resources>
