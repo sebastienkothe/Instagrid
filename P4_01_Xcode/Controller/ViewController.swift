@@ -23,7 +23,13 @@ class ViewController: UIViewController {
     @IBOutlet private weak var buttonForChangeGridToCrossConfig: UIButton!
     
     // This tag associate to image Views for recognize them
-    var tag = 1
+    private var tagPlusImageViews = 0
+    
+    private var tagImageView = 0 {
+        willSet {
+            tagPlusImageViews = tagImageView
+        }
+    }
     
     private var whiteViews: [UIView] = []
     
@@ -88,8 +94,10 @@ class ViewController: UIViewController {
         buttonForChangeGridToCrossConfig.setImage(nil, for: .normal)
         buttonForChangeGridToReverseConfig.setImage(nil, for: .normal)
         
-        tag = 0
+        tagImageView = 0
     }
+    
+    
     
     private func setupGridLayoutView(layout: PhotoLayout) {
         
@@ -144,8 +152,7 @@ class ViewController: UIViewController {
         view.addSubview(plusImageView)
         plusImageView.image = UIImage(named: "Plus")
         
-        plusImageView.tag = tag
-        print("Tag de la plusImageView == \(plusImageView.tag)")
+        plusImageView.tag = tagPlusImageViews
         plusImageViews.append(plusImageView)
         
         setupPlusImageViews(plusImageView, view)
@@ -168,9 +175,9 @@ class ViewController: UIViewController {
         
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tap)
-        imageView.tag = tag
-        print("Tag de la imageView == \(imageView.tag)")
-        tag += 1
+        imageView.tag = tagImageView
+        
+        tagImageView += 1
     }
     
     @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
@@ -181,7 +188,7 @@ class ViewController: UIViewController {
         CameraHandler.shared.imagePickedBlock = { (image) in
             clickedView.image = image
             
-            for plusImageView in self.plusImageViews where plusImageView.tag == clickedView.tag + 1 {
+            for plusImageView in self.plusImageViews where plusImageView.tag == clickedView.tag {
                 plusImageView.image = nil
             }
         }
