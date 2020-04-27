@@ -42,7 +42,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Ro5-1A-wdj" userLabel="stackView1">
                                 <rect key="frame" x="52.5" y="572" width="270" height="80"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alI-gO-13C" userLabel="BottomButton1">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alI-gO-13C" userLabel="BottomButton1">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="alI-gO-13C" secondAttribute="height" multiplier="1:1" id="evT-bI-v3E"/>
@@ -62,7 +62,7 @@
                                             <action selector="changeGridToDefaultConfig:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HRp-DY-bRM"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DNH-vI-7f8" userLabel="BottomButton3">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DNH-vI-7f8" userLabel="BottomButton3">
                                         <rect key="frame" x="190" y="0.0" width="80" height="80"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="DNH-vI-7f8" secondAttribute="height" multiplier="1:1" id="FIj-qN-URC"/>

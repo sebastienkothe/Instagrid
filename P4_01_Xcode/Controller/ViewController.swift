@@ -25,8 +25,13 @@ class ViewController: UIViewController {
     private var whiteViews: [UIView] = []
     
     private var imageViews: [UIImageView] = [] {
+        
         didSet {
-            addTapGestureRecognizerToImageViews()
+            
+            for imageView in imageViews where (imageView.gestureRecognizers == nil) {
+                print("J'exécute la méthode addTapGestureRecognizerToImageViews")
+                addTapGestureRecognizerToImageViews()
+            }
         }
     }
     
@@ -85,9 +90,9 @@ class ViewController: UIViewController {
         
         imageViews.removeAll()
         
-        buttonForChangeGridToDefaultConfig.currentImage
-//        buttonForChangeGridToCrossConfig
-//        buttonForChangeGridToReverseConfig
+        buttonForChangeGridToDefaultConfig.setImage(nil, for: .normal)
+        buttonForChangeGridToCrossConfig.setImage(nil, for: .normal)
+        buttonForChangeGridToReverseConfig.setImage(nil, for: .normal)
     }
     
     private func setupGridLayoutView(layout: PhotoLayout) {
@@ -115,7 +120,7 @@ class ViewController: UIViewController {
     private func addImageViewTo(_ whiteView: UIView) {
         let imageView = UIImageView()
         // Can deleted this after setup
-        imageView.backgroundColor = .cyan
+        
         whiteView.addSubview(imageView)
         imageViews.append(imageView)
         
@@ -155,7 +160,7 @@ class ViewController: UIViewController {
             plusImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             plusImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor), plusImageView.widthAnchor.constraint(equalToConstant: 40), plusImageView.heightAnchor.constraint(equalToConstant: 40)
         ])
-    
+        
     }
     
     private func addTapGestureRecognizerToImageViews() {
@@ -166,6 +171,7 @@ class ViewController: UIViewController {
             view.addGestureRecognizer(tap)
             view.tag = index
         }
+        
     }
     
     @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
