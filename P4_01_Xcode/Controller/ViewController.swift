@@ -13,26 +13,57 @@ class ViewController: UIViewController {
     // MARK: - Private properties
     private let photoLayoutProvider = PhotoLayoutProvider()
     
+    @IBOutlet weak var mainSquare: UIView!
+    
     @IBOutlet private weak var topStackView: UIStackView!
     @IBOutlet private weak var botStackView: UIStackView!
     
-    @IBOutlet weak var buttonForChangeGridToReverseConfig: UIButton!
-    @IBOutlet weak var buttonForChangeGridToDefaultConfig: UIButton!
-    @IBOutlet weak var buttonForChangeGridToCrossConfig: UIButton!
-    
+    @IBOutlet private weak var buttonForChangeGridToReverseConfig: UIButton!
+    @IBOutlet private weak var buttonForChangeGridToDefaultConfig: UIButton!
+    @IBOutlet private weak var buttonForChangeGridToCrossConfig: UIButton!
     
     private var whiteViews: [UIView] = []
-    private var imageViews: [UIImageView] = []
+    
+    private var imageViews: [UIImageView] = [] {
+        didSet {
+            addTapGestureRecognizerToImageViews()
+        }
+    }
+    
     private var plusImageViews: [UIImageView] = []
     
     // MARK: - Private methods
-    private func setupGridLayoutView(layout: PhotoLayout) {
+    
+    @IBAction private func changeGridToDefaultConfig(_ sender: Any) {
         
-        addWhiteViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
-        addWhiteViewsTo(stackView: botStackView, numberOfViews: layout.numberOfBotView)
+        cleanGridLayoutView()
+        
+        buttonForChangeGridToDefaultConfig.setImage(UIImage(named: "Selected"), for: .normal)
+        let layout = photoLayoutProvider.photoLayouts[0]
+        setupGridLayoutView(layout: layout)
         
     }
     
+    @IBAction private func changeGridToReverseConfig(_ sender: Any) {
+        
+        cleanGridLayoutView()
+        
+        buttonForChangeGridToReverseConfig.setImage(UIImage(named: "Selected"), for: .normal)
+        let layout = photoLayoutProvider.photoLayouts[1]
+        setupGridLayoutView(layout: layout)
+    }
+    
+    
+    @IBAction private func changeGridToCrossConfig(_ sender: Any) {
+        
+        cleanGridLayoutView()
+        
+        buttonForChangeGridToCrossConfig.setImage(UIImage(named: "Selected"), for: .normal)
+        let layout = photoLayoutProvider.photoLayouts[2]
+        setupGridLayoutView(layout: layout)
+    }
+    
+    /// Method to delete the views when the user tap on buttons
     private func cleanGridLayoutView() {
         
         for view in topStackView.arrangedSubviews {
@@ -49,7 +80,20 @@ class ViewController: UIViewController {
         
         for imageView in imageViews {
             imageView.removeFromSuperview()
+            imageView.gestureRecognizers?.removeAll()
         }
+        
+        imageViews.removeAll()
+        
+        buttonForChangeGridToDefaultConfig.currentImage
+//        buttonForChangeGridToCrossConfig
+//        buttonForChangeGridToReverseConfig
+    }
+    
+    private func setupGridLayoutView(layout: PhotoLayout) {
+        
+        addWhiteViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
+        addWhiteViewsTo(stackView: botStackView, numberOfViews: layout.numberOfBotView)
         
     }
     
@@ -59,52 +103,51 @@ class ViewController: UIViewController {
             let whiteView = UIView()
             whiteView.backgroundColor = .white
             stackView.addArrangedSubview(whiteView)
-            
             // Add my white views in [whiteViews]
             whiteViews.append(whiteView)
             
-            addImageViewTo(whiteView: whiteView)
-            
+            addImageViewTo(whiteView)
         }
+        
         
     }
     
-    fileprivate func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
+    private func addImageViewTo(_ whiteView: UIView) {
+        let imageView = UIImageView()
+        // Can deleted this after setup
+        imageView.backgroundColor = .cyan
+        whiteView.addSubview(imageView)
+        imageViews.append(imageView)
+        
+        setupImageView(imageView, whiteView)
+        addPlusImageTo(imageView)
+        
+        
+    }
+    
+    private func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             //constraints here
             imageView.centerXAnchor.constraint(equalTo: whiteView.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: whiteView.centerYAnchor), imageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor), imageView.heightAnchor.constraint(equalTo: whiteView.heightAnchor)
         ])
+        
     }
-    
-    private func addImageViewTo(whiteView: UIView) {
-        let imageView = UIImageView()
-        whiteView.addSubview(imageView)
-        
-        imageViews.append(imageView)
-        imageView.contentMode = .scaleAspectFill
-        
-        imageView.backgroundColor = .cyan
-        
-        addPlusImageTo(imageView)
-        setupImageView(imageView, whiteView)
-    }
-    
-    
     
     private func addPlusImageTo(_ view: UIView) {
         
         let plusImageView = UIImageView()
         view.addSubview(plusImageView)
         plusImageView.image = UIImage(named: "Plus")
-        
         plusImageViews.append(plusImageView)
+        
         setupPlusImageViews(plusImageView, view)
         
     }
     
-    fileprivate func setupPlusImageViews(_ plusImageView: UIImageView, _ view: UIView) {
+    private func setupPlusImageViews(_ plusImageView: UIImageView, _ view: UIView) {
         
         plusImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -112,92 +155,37 @@ class ViewController: UIViewController {
             plusImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             plusImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor), plusImageView.widthAnchor.constraint(equalToConstant: 40), plusImageView.heightAnchor.constraint(equalToConstant: 40)
         ])
+    
+    }
+    
+    private func addTapGestureRecognizerToImageViews() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView(sender:)))
         
+        for (index, view) in imageViews.enumerated() {
+            view.isUserInteractionEnabled = true
+            view.addGestureRecognizer(tap)
+            view.tag = index
+        }
+    }
+    
+    @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
+        
+        let clickedView = imageViews[sender.view!.tag]
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            clickedView.image = image
+        }
     }
     
     private func hide(_ element: UIView) {
         element.isHidden = true
     }
     
-    @IBAction private func changeGridToReverseConfig(_ sender: Any) {
-        cleanGridLayoutView()
-        
-        let layout = photoLayoutProvider.photoLayouts[0]
-        setupGridLayoutView(layout: layout)
-    }
+    // MARK: - Internal methods
     
-    @IBAction private func cchangeGridToDefaultConfig(_ sender: Any) {
-        
-        cleanGridLayoutView()
-        
-        let layout = photoLayoutProvider.photoLayouts[1]
-        setupGridLayoutView(layout: layout)
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
         
     }
-    
-    @IBAction private func changeGridToCrossConfig(_ sender: Any) {
-        
-        cleanGridLayoutView()
-        
-        let layout = photoLayoutProvider.photoLayouts[2]
-        setupGridLayoutView(layout: layout)
-    }
-    
-    
-    @objc private func addPhotoToImageView1(imageView: UIImageView) {
-        imageView.isUserInteractionEnabled = true
-        imageView.contentMode = .scaleAspectFill
-        
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
-            /* get your image here */
-            imageView.image = image
-            //self.plus1.isHidden = true
-        }
-    }
-    
-    @objc private func addPhotoToImageView2() {
-        //        imageView2.isUserInteractionEnabled = true
-        //        imageView2.contentMode = .scaleAspectFill
-        
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
-            /* get your image here */
-            //            self.imageView2.image = image
-            //            self.plus2.isHidden = true
-        }
-    }
-    
-    @objc private func addPhotoToImageView3() {
-        //        imageView3.isUserInteractionEnabled = true
-        //        imageView3.contentMode = .scaleAspectFill
-        
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
-            /* get your image here */
-            //            self.imageView3.image = image
-            //            self.plus3.isHidden = true
-        }
-    }
-    
-    
-    
-    //    // MARK: - Internal methods
-    //    override internal func viewDidLoad() {
-    //        super.viewDidLoad()
-    //
-    //        let gestureImageView1 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView1))
-    //        imageView1.addGestureRecognizer(gestureImageView1)
-    //
-    //        let gestureImageView2 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView2))
-    //        imageView2.addGestureRecognizer(gestureImageView2)
-    //
-    //        let gestureImageView3 = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView3))
-    //        imageView3.addGestureRecognizer(gestureImageView3)
-    //
-    //        /* let swipeGestureVC1 = UISwipeGestureRecognizer(target: self, action: #selector())
-    //        view.addGestureRecognizer(swipeGestureVC1) */
-    //
-    //    }
     
 }

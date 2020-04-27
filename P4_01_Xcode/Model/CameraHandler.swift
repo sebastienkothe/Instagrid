@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class CameraHandler: NSObject{
-
+    
     //MARK: Internal Properties
     static let shared = CameraHandler()
     var imagePickedBlock: ((UIImage) -> Void)?

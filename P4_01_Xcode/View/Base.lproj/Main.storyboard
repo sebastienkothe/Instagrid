@@ -59,7 +59,7 @@
                                         </constraints>
                                         <state key="normal" image="Selected" backgroundImage="Layout 2"/>
                                         <connections>
-                                            <action selector="cchangeGridToDefaultConfig:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zVW-Hn-GG1"/>
+                                            <action selector="changeGridToDefaultConfig:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HRp-DY-bRM"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DNH-vI-7f8" userLabel="BottomButton3">
@@ -120,6 +120,7 @@
                         <outlet property="buttonForChangeGridToCrossConfig" destination="DNH-vI-7f8" id="cBH-4i-hcS"/>
                         <outlet property="buttonForChangeGridToDefaultConfig" destination="7Ac-3a-cf2" id="VUL-lF-9JC"/>
                         <outlet property="buttonForChangeGridToReverseConfig" destination="alI-gO-13C" id="X33-aV-6sM"/>
+                        <outlet property="mainSquare" destination="tIw-JV-OeG" id="sEp-fo-UwS"/>
                         <outlet property="topStackView" destination="xHC-GO-MFG" id="goj-jJ-iQK"/>
                     </connections>
                 </viewController>
