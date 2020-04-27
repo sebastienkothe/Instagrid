@@ -22,18 +22,12 @@ class ViewController: UIViewController {
     @IBOutlet private weak var buttonForChangeGridToDefaultConfig: UIButton!
     @IBOutlet private weak var buttonForChangeGridToCrossConfig: UIButton!
     
+    // This tag associate to image Views for recognize them
+    var tag = 1
+    
     private var whiteViews: [UIView] = []
     
-    private var imageViews: [UIImageView] = [] {
-        
-        didSet {
-            
-            for imageView in imageViews where (imageView.gestureRecognizers == nil) {
-                print("J'exécute la méthode addTapGestureRecognizerToImageViews")
-                addTapGestureRecognizerToImageViews()
-            }
-        }
-    }
+    private var imageViews: [UIImageView] = []
     
     private var plusImageViews: [UIImageView] = []
     
@@ -93,6 +87,8 @@ class ViewController: UIViewController {
         buttonForChangeGridToDefaultConfig.setImage(nil, for: .normal)
         buttonForChangeGridToCrossConfig.setImage(nil, for: .normal)
         buttonForChangeGridToReverseConfig.setImage(nil, for: .normal)
+        
+        tag = 0
     }
     
     private func setupGridLayoutView(layout: PhotoLayout) {
@@ -125,6 +121,7 @@ class ViewController: UIViewController {
         imageViews.append(imageView)
         
         setupImageView(imageView, whiteView)
+        addTapGestureRecognizerToImageViews(imageView: imageView)
         addPlusImageTo(imageView)
         
         
@@ -146,6 +143,9 @@ class ViewController: UIViewController {
         let plusImageView = UIImageView()
         view.addSubview(plusImageView)
         plusImageView.image = UIImage(named: "Plus")
+        
+        plusImageView.tag = tag
+        print("Tag de la plusImageView == \(plusImageView.tag)")
         plusImageViews.append(plusImageView)
         
         setupPlusImageViews(plusImageView, view)
@@ -163,23 +163,27 @@ class ViewController: UIViewController {
         
     }
     
-    private func addTapGestureRecognizerToImageViews() {
+    private func addTapGestureRecognizerToImageViews(imageView: UIImageView) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView(sender:)))
         
-        for (index, view) in imageViews.enumerated() {
-            view.isUserInteractionEnabled = true
-            view.addGestureRecognizer(tap)
-            view.tag = index
-        }
-        
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tap)
+        imageView.tag = tag
+        print("Tag de la imageView == \(imageView.tag)")
+        tag += 1
     }
     
     @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
         
         let clickedView = imageViews[sender.view!.tag]
+        
         CameraHandler.shared.showActionSheet(vc: self)
         CameraHandler.shared.imagePickedBlock = { (image) in
             clickedView.image = image
+            
+            for plusImageView in self.plusImageViews where plusImageView.tag == clickedView.tag + 1 {
+                plusImageView.image = nil
+            }
         }
     }
     
