@@ -122,11 +122,11 @@
                     <navigationItem key="navigationItem" id="ief-ZJ-wdd"/>
                     <connections>
                         <outlet property="botStackView" destination="hoE-HZ-9yN" id="uMw-Fl-I5n"/>
-                        <outlet property="buttonForChangeGridToCrossConfig" destination="DNH-vI-7f8" id="cBH-4i-hcS"/>
-                        <outlet property="buttonForChangeGridToDefaultConfig" destination="7Ac-3a-cf2" id="VUL-lF-9JC"/>
-                        <outlet property="buttonForChangeGridToReverseConfig" destination="alI-gO-13C" id="X33-aV-6sM"/>
                         <outlet property="mainSquare" destination="tIw-JV-OeG" id="sEp-fo-UwS"/>
                         <outlet property="topStackView" destination="xHC-GO-MFG" id="goj-jJ-iQK"/>
+                        <outletCollection property="bottomButtons" destination="alI-gO-13C" collectionClass="NSMutableArray" id="4Di-DI-QuZ"/>
+                        <outletCollection property="bottomButtons" destination="7Ac-3a-cf2" collectionClass="NSMutableArray" id="qpE-SS-kgx"/>
+                        <outletCollection property="bottomButtons" destination="DNH-vI-7f8" collectionClass="NSMutableArray" id="Gbd-22-dyY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

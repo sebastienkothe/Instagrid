@@ -17,14 +17,12 @@ class ViewController: UIViewController {
     
     @IBOutlet private weak var topStackView: UIStackView!
     @IBOutlet private weak var botStackView: UIStackView!
+        
+    @IBOutlet var bottomButtons: [UIButton]!
     
-    @IBOutlet private weak var buttonForChangeGridToReverseConfig: UIButton!
-    @IBOutlet private weak var buttonForChangeGridToDefaultConfig: UIButton!
-    @IBOutlet private weak var buttonForChangeGridToCrossConfig: UIButton!
-    
-    // This tag associate to image Views for recognize them
+    // Tags to identify the elements
     private var tagPlusImageViews = 0
-    
+    private var tagBottomButton = 0
     private var tagImageView = 0 {
         willSet {
             tagPlusImageViews = tagImageView
@@ -39,31 +37,37 @@ class ViewController: UIViewController {
     
     // MARK: - Private methods
     
-    @IBAction private func changeGridToDefaultConfig(_ sender: Any) {
+    @IBAction private func changeGridToDefaultConfig(_ sender: UIButton) {
         
         cleanGridLayoutView()
         
-        buttonForChangeGridToDefaultConfig.setImage(UIImage(named: "Selected"), for: .normal)
+        
+        setupBottomButtons(button: bottomButtons[sender.tag])
+        
         let layout = photoLayoutProvider.photoLayouts[0]
         setupGridLayoutView(layout: layout)
         
     }
     
-    @IBAction private func changeGridToReverseConfig(_ sender: Any) {
+    @IBAction private func changeGridToReverseConfig(_ sender: UIButton) {
         
         cleanGridLayoutView()
         
-        buttonForChangeGridToReverseConfig.setImage(UIImage(named: "Selected"), for: .normal)
+        
+        setupBottomButtons(button: bottomButtons[sender.tag])
+        
         let layout = photoLayoutProvider.photoLayouts[1]
         setupGridLayoutView(layout: layout)
     }
     
     
-    @IBAction private func changeGridToCrossConfig(_ sender: Any) {
+    @IBAction private func changeGridToCrossConfig(_ sender: UIButton) {
         
         cleanGridLayoutView()
         
-        buttonForChangeGridToCrossConfig.setImage(UIImage(named: "Selected"), for: .normal)
+        
+        setupBottomButtons(button: bottomButtons[sender.tag])
+        
         let layout = photoLayoutProvider.photoLayouts[2]
         setupGridLayoutView(layout: layout)
     }
@@ -90,15 +94,28 @@ class ViewController: UIViewController {
         
         imageViews.removeAll()
         
-        buttonForChangeGridToDefaultConfig.setImage(nil, for: .normal)
-        buttonForChangeGridToCrossConfig.setImage(nil, for: .normal)
-        buttonForChangeGridToReverseConfig.setImage(nil, for: .normal)
-        
+        resetButtonImages()
+
         tagImageView = 0
     }
     
+    private func setupBottomButtons(button: UIButton) {
+        button.setImage(UIImage(named: "Selected"), for: .normal)
+    }
     
+    private func addATag() {
+        for button in bottomButtons {
+            button.tag = tagBottomButton
+            tagBottomButton += 1
+        }
+    }
     
+    private func resetButtonImages() {
+        for button in bottomButtons {
+            button.setImage(nil, for: .normal)
+        }
+    }
+
     private func setupGridLayoutView(layout: PhotoLayout) {
         
         addWhiteViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
@@ -202,7 +219,7 @@ class ViewController: UIViewController {
     
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        
+        addATag()
     }
     
 }
