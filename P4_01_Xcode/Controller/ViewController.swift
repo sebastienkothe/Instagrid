@@ -35,6 +35,8 @@ class ViewController: UIViewController {
     
     private var plusImageViews: [UIImageView] = []
     
+    let screenHeight = UIScreen.main.bounds.height
+
     // MARK: - Private methods
     
     @IBAction private func changeGridToDefaultConfig(_ sender: UIButton) {
@@ -154,6 +156,7 @@ class ViewController: UIViewController {
     
     private func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
         
+        imageView.contentMode = .redraw
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             //constraints here
@@ -211,6 +214,28 @@ class ViewController: UIViewController {
         }
     }
     
+    @objc private func shareTheGrid(_ sender: UISwipeGestureRecognizer) {
+        
+        let negativeValueOfScreenHeightDividedBy2 = -screenHeight / 2.0
+        let mainSquareHeightDividedBy2 = mainSquare.frame.height / 2.0
+        let sum = negativeValueOfScreenHeightDividedBy2 - mainSquareHeightDividedBy2
+        
+        let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+            self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: sum)
+        }
+        animator.startAnimation()
+        
+        switch sender.state {
+        case .began:
+            print("C'est parti")
+        case .ended:
+            print("Le geste est terminé")
+            print(mainSquare.frame.origin)
+        default:
+            break
+        }
+    }
+    
     private func hide(_ element: UIView) {
         element.isHidden = true
     }
@@ -220,6 +245,10 @@ class ViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         addATag()
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(shareTheGrid(_:)))
+        swipeGesture.direction = .up
+        view.addGestureRecognizer(swipeGesture)
     }
     
 }

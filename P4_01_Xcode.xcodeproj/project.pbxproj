@@ -16,6 +16,8 @@
 		363D681E24531B45007ED48C /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D681D24531B45007ED48C /* CameraHandler.swift */; };
 		369BE934245439A300AA4C7D /* PhotoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369BE933245439A300AA4C7D /* PhotoLayout.swift */; };
 		369BE936245439DC00AA4C7D /* PhotoLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369BE935245439DC00AA4C7D /* PhotoLayoutProvider.swift */; };
+		36C2AE4A24579F6000324FDD /* ThirstySoftRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36C2AE4924579F6000324FDD /* ThirstySoftRegular.otf */; };
+		36C2AE4C24579F7400324FDD /* Delm-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36C2AE4B24579F7400324FDD /* Delm-Medium.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		363D681D24531B45007ED48C /* CameraHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
 		369BE933245439A300AA4C7D /* PhotoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLayout.swift; sourceTree = "<group>"; };
 		369BE935245439DC00AA4C7D /* PhotoLayoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLayoutProvider.swift; sourceTree = "<group>"; };
+		36C2AE4924579F6000324FDD /* ThirstySoftRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThirstySoftRegular.otf; sourceTree = "<group>"; };
+		36C2AE4B24579F7400324FDD /* Delm-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Delm-Medium.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,8 @@
 				362DD56C244B60E200E3A6F7 /* AppDelegate.swift */,
 				362DD575244B60E800E3A6F7 /* Assets.xcassets */,
 				362DD577244B60E800E3A6F7 /* LaunchScreen.storyboard */,
+				36C2AE4B24579F7400324FDD /* Delm-Medium.otf */,
+				36C2AE4924579F6000324FDD /* ThirstySoftRegular.otf */,
 				362DD57A244B60E800E3A6F7 /* Info.plist */,
 			);
 			path = Supporting_Files;
@@ -167,7 +173,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				362DD579244B60E800E3A6F7 /* LaunchScreen.storyboard in Resources */,
+				36C2AE4C24579F7400324FDD /* Delm-Medium.otf in Resources */,
 				362DD576244B60E800E3A6F7 /* Assets.xcassets in Resources */,
+				36C2AE4A24579F6000324FDD /* ThirstySoftRegular.otf in Resources */,
 				362DD574244B60E200E3A6F7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
