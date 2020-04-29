@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     // MARK: - Private properties
     private let photoLayoutProvider = PhotoLayoutProvider()
     private let screenHeight = UIScreen.main.bounds.height
+    private let screenWidth = UIScreen.main.bounds.width
     private let gridScreenshot: UIImage! = nil
     
     private var mySwipeGestureRecognizer: UISwipeGestureRecognizer! = nil
@@ -20,6 +21,9 @@ class ViewController: UIViewController {
     /// Tags to identify the elements
     private var tagPlusImageViews = 0
     private var tagBottomButton = 0
+    
+    private var startSharingAnimation: UIViewPropertyAnimator? = nil
+    private var endSharingAnimation: UIViewPropertyAnimator? = nil
     
     /// Property to determinate the device's orientations
     private var statusBarOrientation: UIInterfaceOrientation? {
@@ -228,7 +232,7 @@ class ViewController: UIViewController {
         tagImageView += 1
     }
     
-    private func shareContentOfTheGrid(dataForSwipeAnimations: CGFloat) {
+    private func shareContentOfTheGrid() {
         switch mySwipeGestureRecognizer.state {
         case .ended:
             
@@ -240,12 +244,8 @@ class ViewController: UIViewController {
             
             ac.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
                 
-                let animator = UIViewPropertyAnimator(duration: 0.2, curve: .linear) {
-                    self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: abs(dataForSwipeAnimations))
-                }
-                
                 if activityType == nil || completed {
-                    animator.startAnimation()
+//                    animator.startAnimation()
                 }
             }
             
@@ -289,15 +289,12 @@ class ViewController: UIViewController {
     
     @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
         
-        let dataForSwipeAnimations = (-self.screenHeight / 2.0) - (self.mainSquare.frame.height / 2) - 10
-        
-        let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-            
-            self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: dataForSwipeAnimations)
+        guard let startSharingAnimationUnwrapped = startSharingAnimation else {
+            return
         }
         
-        animator.startAnimation()
-        shareContentOfTheGrid(dataForSwipeAnimations: dataForSwipeAnimations)
+        startSharingAnimationUnwrapped.startAnimation()
+        shareContentOfTheGrid()
     }
     
     
@@ -322,11 +319,30 @@ class ViewController: UIViewController {
             print("Landscape mode")
             mySwipeGestureRecognizer.direction = .left
             
+            self.startSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
+            }
+            
+            self.endSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
+            }
         }
         
         if UIDevice.current.orientation.isPortrait {
             print("Portrait mode")
             mySwipeGestureRecognizer.direction = .up
+            
+            self.startSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
+            }
+            
+            self.endSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
+            }
         }
     }
     
