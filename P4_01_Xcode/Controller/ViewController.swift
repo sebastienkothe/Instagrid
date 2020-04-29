@@ -10,7 +10,18 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    // MARK: - Private properties
+    private let photoLayoutProvider = PhotoLayoutProvider()
+    private let screenHeight = UIScreen.main.bounds.height
+    private let gridScreenshot: UIImage! = nil
     
+    private var mySwipeGestureRecognizer: UISwipeGestureRecognizer! = nil
+    
+    /// Tags to identify the elements
+    private var tagPlusImageViews = 0
+    private var tagBottomButton = 0
+    
+    /// Property to determinate the device's orientations
     private var statusBarOrientation: UIInterfaceOrientation? {
         get {
             guard let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation else {
@@ -24,42 +35,28 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: - Private properties
-    private let photoLayoutProvider = PhotoLayoutProvider()
-    
-    @IBOutlet weak var mainSquare: UIView!
-    
-    @IBOutlet private weak var topStackView: UIStackView!
-    @IBOutlet private weak var botStackView: UIStackView!
-    @IBOutlet weak var stackViewGestureIndication: UIStackView!
-    
-    @IBOutlet var bottomButtons: [UIButton]!
-    
-    // Tags to identify the elements
-    private var tagPlusImageViews = 0
-    private var tagBottomButton = 0
     private var tagImageView = 0 {
         willSet {
             tagPlusImageViews = tagImageView
         }
     }
     
+    // MARK: Private outlet
+    @IBOutlet private weak var mainSquare: UIView!
+    @IBOutlet private weak var topStackView: UIStackView!
+    @IBOutlet private weak var botStackView: UIStackView!
+    @IBOutlet private weak var stackViewGestureIndication: UIStackView!
+    
+    /// Outlet Collection
+    @IBOutlet private var bottomButtons: [UIButton]!
+    
+    // mainSquare's children
     private var whiteViews: [UIView] = []
-    
     private var imageViews: [UIImageView] = []
-    
     private var imagesFromImageViews: [UIImage] = []
-    
     private var plusImageViews: [UIImageView] = []
     
-    private let screenHeight = UIScreen.main.bounds.height
-    
-    private var mySwipeGestureRecognizer: UISwipeGestureRecognizer! = nil
-    
-    private let gridScreenshot: UIImage! = nil
-    
-    
-    
+    // MARK: Private action
     @IBAction private func changeGridToDefaultConfig(_ sender: UIButton) {
         
         cleanGridLayoutView()
@@ -95,6 +92,8 @@ class ViewController: UIViewController {
         setupGridLayoutView(layout: layout)
     }
     
+    // MARK: - Private methods
+    
     /// Method to delete the views when the user tap on buttons
     private func cleanGridLayoutView() {
         
@@ -125,7 +124,7 @@ class ViewController: UIViewController {
         
         stackViewGestureIndication.isHidden = true
         
-        
+        /// To add the swipe gesture recognizer
         view.removeGestureRecognizer(mySwipeGestureRecognizer)
         
     }
@@ -229,6 +228,48 @@ class ViewController: UIViewController {
         tagImageView += 1
     }
     
+    private func shareContentOfTheGrid(dataForSwipeAnimations: CGFloat) {
+        switch mySwipeGestureRecognizer.state {
+        case .ended:
+            
+            let items = [screenShotMethod()]
+            
+            let ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
+            
+            present(ac, animated: true)
+            
+            ac.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+                
+                let animator = UIViewPropertyAnimator(duration: 0.2, curve: .linear) {
+                    self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: abs(dataForSwipeAnimations))
+                }
+                
+                if activityType == nil || completed {
+                    animator.startAnimation()
+                }
+            }
+            
+        default:
+            break
+        }
+    }
+    
+    private func hide(_ element: UIView) {
+        element.isHidden = true
+    }
+    
+    private func screenShotMethod() -> UIImage? {
+        //Create the UIImage
+        UIGraphicsBeginImageContext(mainSquare.frame.size)
+        mainSquare.layer.render(in: UIGraphicsGetCurrentContext()!)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+    
+    // MARK: (objc) private methods
     @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
         
         let clickedView = imageViews[sender.view!.tag]
@@ -259,64 +300,8 @@ class ViewController: UIViewController {
         shareContentOfTheGrid(dataForSwipeAnimations: dataForSwipeAnimations)
     }
     
-    private func shareContentOfTheGrid(dataForSwipeAnimations: CGFloat) {
-        switch mySwipeGestureRecognizer.state {
-        case .ended:
-            
-            let items = [screenShotMethod()]
-            
-            let ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
-            
-            present(ac, animated: true)
-            
-            ac.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
-                
-                let animator = UIViewPropertyAnimator(duration: 0.2, curve: .linear) {
-                    self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: abs(dataForSwipeAnimations))
-                }
-                
-                if activityType == nil || completed {
-                    animator.startAnimation()
-                }
-            }
-            
-        default:
-            break
-        }
-    }
-    
-    
-    private func hide(_ element: UIView) {
-        element.isHidden = true
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape mode")
-            mySwipeGestureRecognizer.direction = .left
-            
-        }
-        
-        if UIDevice.current.orientation.isPortrait {
-            print("Portrait mode")
-            mySwipeGestureRecognizer.direction = .up
-        }
-    }
-    
-    private func screenShotMethod() -> UIImage? {
-        //Create the UIImage
-        UIGraphicsBeginImageContext(mainSquare.frame.size)
-        mainSquare.layer.render(in: UIGraphicsGetCurrentContext()!)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return image
-    }
     
     // MARK: - Internal methods
-    
     override internal func viewDidLoad() {
         super.viewDidLoad()
         
@@ -329,6 +314,20 @@ class ViewController: UIViewController {
         mySwipeGestureRecognizer = swipeGesture
         
         addATag()
+    }
+    
+    override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape mode")
+            mySwipeGestureRecognizer.direction = .left
+            
+        }
+        
+        if UIDevice.current.orientation.isPortrait {
+            print("Portrait mode")
+            mySwipeGestureRecognizer.direction = .up
+        }
     }
     
 }
