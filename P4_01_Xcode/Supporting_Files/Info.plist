@@ -65,7 +65,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app wants to use your photos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app wants to take screenshots</string>
+	<string>This app wants to write photos</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Delm-Medium.otf</string>
