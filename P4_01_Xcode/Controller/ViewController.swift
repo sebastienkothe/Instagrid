@@ -8,36 +8,24 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIWindowSceneDelegate {
     
     // MARK: - Private properties
     private let photoLayoutProvider = PhotoLayoutProvider()
     private let screenHeight = UIScreen.main.bounds.height
+    private let size = UIScreen.main.bounds.size
     private let screenWidth = UIScreen.main.bounds.width
     private let gridScreenshot: UIImage! = nil
+
+    private var deviceIsPortraitMode = false
+    private var deviceIsLandscapeMode = false
     
     private var mySwipeGestureRecognizer: UISwipeGestureRecognizer! = nil
     
+    var ac : UIActivityViewController! = nil
     /// Tags to identify the elements
     private var tagPlusImageViews = 0
     private var tagBottomButton = 0
-    
-    private var startSharingAnimation: UIViewPropertyAnimator? = nil
-    private var endSharingAnimation: UIViewPropertyAnimator? = nil
-    
-    /// Property to determinate the device's orientations
-    private var statusBarOrientation: UIInterfaceOrientation? {
-        get {
-            guard let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation else {
-                #if DEBUG
-                fatalError("Could not obtain UIInterfaceOrientation from a valid windowScene")
-                #else
-                return nil
-                #endif
-            }
-            return orientation
-        }
-    }
     
     private var tagImageView = 0 {
         willSet {
@@ -232,23 +220,35 @@ class ViewController: UIViewController {
         tagImageView += 1
     }
     
-    private func shareContentOfTheGrid() {
-        switch mySwipeGestureRecognizer.state {
-        case .ended:
+    @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
+        inspectDeviceOrientationForAnimations()
+        shareContentOfTheGrid()
+    }
+    
+    func sharedShareAction(controller: UIViewController) {
+
+        controller.present(ac,animated: true, completion: nil)
+
+        ac.completionWithItemsHandler = { activity, completed, items, error in
+                if completed || !completed {
+                    self.ac.dismiss(animated: true) {
+                        self.inspectDeviceOrientationForReverseAnimations()
+                    }
+                    return
+                }
             
+            }
+    }
+    
+    private func shareContentOfTheGrid() {
+        
+        switch mySwipeGestureRecognizer.state {
+            
+        case .ended:
             let items = [screenShotMethod()]
             
-            let ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
-            
-            present(ac, animated: true)
-            
-            ac.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
-                
-                if activityType == nil || completed {
-//                    animator.startAnimation()
-                }
-            }
-            
+            ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
+            sharedShareAction(controller: self)
         default:
             break
         }
@@ -287,63 +287,81 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
+    // MARK: - Internal methods
+    fileprivate func initializeSwipeGesture() {
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
+        mySwipeGestureRecognizer = swipeGesture
         
-        guard let startSharingAnimationUnwrapped = startSharingAnimation else {
-            return
+        if size.width < size.height {
+            mySwipeGestureRecognizer.direction = .up
+            deviceIsPortraitMode = true
+        } else {
+            mySwipeGestureRecognizer.direction = .left
+            deviceIsLandscapeMode = true
         }
-        
-        startSharingAnimationUnwrapped.startAnimation()
-        shareContentOfTheGrid()
     }
     
+    func inspectDeviceOrientationForAnimations() {
+        
+        if deviceIsPortraitMode {
+            let startSharingAnimationPortraitMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: -UIScreen.main.bounds.maxY)
+            }
+            
+            startSharingAnimationPortraitMode.startAnimation()
+            
+        } else {
+            let endSharingAnimationLandscapeMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: -UIScreen.main.bounds.maxX, dy: 0)
+            }
+            
+            endSharingAnimationLandscapeMode.startAnimation()
+        }
+        
+    }
     
-    // MARK: - Internal methods
+    func inspectDeviceOrientationForReverseAnimations() {
+        
+        if deviceIsPortraitMode  {
+            let startSharingReverseAnimationPortraitMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: UIScreen.main.bounds.maxY)
+            }
+            
+            startSharingReverseAnimationPortraitMode.startAnimation()
+            
+        } else {
+            let endSharingReverseAnimationLandscapeMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                
+                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: UIScreen.main.bounds.maxX, dy: 0)
+            }
+            
+            endSharingReverseAnimationLandscapeMode.startAnimation()
+        }
+        
+        
+    }
+    
     override internal func viewDidLoad() {
         super.viewDidLoad()
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
-        
+        initializeSwipeGesture()
         hide(stackViewGestureIndication)
         resetButtonImages()
-        swipeGesture.direction = statusBarOrientation!.isPortrait ? .up : .left
-        
-        mySwipeGestureRecognizer = swipeGesture
-        
         addATag()
     }
     
     override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape mode")
-            mySwipeGestureRecognizer.direction = .left
-            
-            self.startSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
-            }
-            
-            self.endSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
-            }
+        mySwipeGestureRecognizer.direction = UIDevice.current.orientation.isPortrait ? .up : .left
+        deviceIsPortraitMode = UIDevice.current.orientation.isPortrait ? true : false
+        
+        if ac != nil {
+            ac.dismiss(animated: true, completion: nil)
         }
         
-        if UIDevice.current.orientation.isPortrait {
-            print("Portrait mode")
-            mySwipeGestureRecognizer.direction = .up
-            
-            self.startSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
-            }
-            
-            self.endSharingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: (-self.screenWidth / 2.0) - (self.mainSquare.frame.width / 2) - 10, dy: 0)
-            }
-        }
     }
     
 }
