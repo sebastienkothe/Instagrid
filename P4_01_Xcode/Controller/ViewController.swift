@@ -8,21 +8,30 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIWindowSceneDelegate {
+class ViewController: UIViewController {
+    
+    // MARK: - Internal properties
+    
+    /// Not private because used in PropertyAnimators.swift
+    @IBOutlet weak var mainSquare: UIView!
     
     // MARK: - Private properties
     private let photoLayoutProvider = PhotoLayoutProvider()
+    
+    /// Device screen informations
     private let screenHeight = UIScreen.main.bounds.height
     private let size = UIScreen.main.bounds.size
     private let screenWidth = UIScreen.main.bounds.width
-    private let gridScreenshot: UIImage! = nil
-    
     private var deviceIsPortraitMode = false
     private var deviceIsLandscapeMode = false
     
+    /// The swipe gesture recognizer
     private var mySwipeGestureRecognizer: UISwipeGestureRecognizer! = nil
     
-    var ac : UIActivityViewController! = nil
+    /// ActivityViewController. Used to share the grid
+    private var ac : UIActivityViewController! = nil
+    private let gridScreenshot: UIImage! = nil
+    
     /// Tags to identify the elements
     private var tagPlusImageViews = 0
     private var tagBottomButton = 0
@@ -34,12 +43,11 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
     }
     
     // MARK: Private outlet
-    @IBOutlet weak var mainSquare: UIView!
     @IBOutlet private weak var topStackView: UIStackView!
     @IBOutlet private weak var botStackView: UIStackView!
     @IBOutlet private weak var stackViewGestureIndication: UIStackView!
     
-    /// Outlet Collection
+    /// Bottom buttons' Outlet Collection
     @IBOutlet private var bottomButtons: [UIButton]!
     
     // mainSquare's children
@@ -70,7 +78,6 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
         let layout = photoLayoutProvider.photoLayouts[1]
         setupGridLayoutView(layout: layout)
     }
-    
     
     @IBAction private func changeGridToCrossConfig(_ sender: UIButton) {
         
@@ -105,18 +112,20 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
             imageView.gestureRecognizers?.removeAll()
         }
         
+        /// Reset tables
         imageViews.removeAll()
-        
         imagesFromImageViews.removeAll()
         
-        resetButtonImages()
-        
+        /// Reset tag
         tagImageView = 0
         
+        /// Gesture indications disable when user presses buttons
         stackViewGestureIndication.isHidden = true
         
-        /// To add the swipe gesture recognizer
+        /// To remove the swipe gesture recognizer
         view.removeGestureRecognizer(mySwipeGestureRecognizer)
+        
+        resetButtonImages()
         
     }
     
@@ -150,7 +159,8 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
             let whiteView = UIView()
             whiteView.backgroundColor = .white
             stackView.addArrangedSubview(whiteView)
-            // Add my white views in [whiteViews]
+            
+            // Add white views in [whiteViews]
             whiteViews.append(whiteView)
             
             addImageViewTo(whiteView)
@@ -224,19 +234,18 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
         shareContentOfTheGrid()
     }
     
-    func sharedShareAction(controller: UIViewController) {
-
-        controller.present(ac,animated: true, completion: nil)
-
+    private func sharedShareAction() {
+        
+        present(ac,animated: true, completion: nil)
+        
         ac.completionWithItemsHandler = { activity, completed, items, error in
-                if completed || !completed {
-                    self.ac.dismiss(animated: true) {
-                        self.launchTheReverseAnimation()
-                    }
-                    return
+            if completed || !completed {
+                self.ac.dismiss(animated: true) {
+                    self.launchTheReverseAnimation()
                 }
-            
+                return
             }
+        }
     }
     
     private func shareContentOfTheGrid() {
@@ -247,7 +256,7 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
             let items = [screenShotMethod()]
             
             ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
-            sharedShareAction(controller: self)
+            sharedShareAction()
         default:
             break
         }
@@ -266,10 +275,9 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
         return image
     }
     
-    // MARK: (objc) private methods
     @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
-        
-        let clickedView = imageViews[sender.view!.tag]
+        guard let viewTag = sender.view?.tag else { return }
+        let clickedView = imageViews[viewTag]
         
         CameraHandler.shared.showActionSheet(vc: self)
         CameraHandler.shared.imagePickedBlock = { (image) in
@@ -284,8 +292,7 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
         }
     }
     
-    // MARK: - Internal methods
-    fileprivate func initializeSwipeGesture() {
+    private func initializeSwipeGesture() {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
         mySwipeGestureRecognizer = swipeGesture
         
@@ -298,14 +305,15 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
         }
     }
     
-    func launchTheAnimation() {
+    private func launchTheAnimation() {
         deviceIsPortraitMode ? animations[0].startAnimation() : animations[1].startAnimation()
     }
     
-    func launchTheReverseAnimation() {
+    private func launchTheReverseAnimation() {
         deviceIsPortraitMode ? animations[2].startAnimation() : animations[3].startAnimation()
     }
     
+    // MARK: - Internal methods
     override internal func viewDidLoad() {
         super.viewDidLoad()
         
