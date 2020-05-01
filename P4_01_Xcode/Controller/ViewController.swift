@@ -258,12 +258,10 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
     }
     
     private func screenShotMethod() -> UIImage? {
-        //Create the UIImage
-        UIGraphicsBeginImageContext(mainSquare.frame.size)
-        mainSquare.layer.render(in: UIGraphicsGetCurrentContext()!)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        let renderer = UIGraphicsImageRenderer(size: mainSquare.bounds.size)
+        let image = renderer.image { ctx in
+            mainSquare.drawHierarchy(in: mainSquare.bounds, afterScreenUpdates: true)
+        }
         
         return image
     }
@@ -329,4 +327,3 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
     }
     
 }
-
