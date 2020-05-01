@@ -185,10 +185,9 @@ class ViewController: UIViewController {
     
     private func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
         
-        imageView.contentMode = .redraw
+        imageView.contentMode = .scaleToFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            //constraints here
             imageView.centerXAnchor.constraint(equalTo: whiteView.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: whiteView.centerYAnchor), imageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor), imageView.heightAnchor.constraint(equalTo: whiteView.heightAnchor)
         ])
@@ -212,7 +211,7 @@ class ViewController: UIViewController {
         
         plusImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            //constraints here
+          
             plusImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             plusImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor), plusImageView.widthAnchor.constraint(equalToConstant: 40), plusImageView.heightAnchor.constraint(equalToConstant: 40)
         ])

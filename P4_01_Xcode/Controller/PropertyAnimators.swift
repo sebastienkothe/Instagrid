@@ -11,6 +11,7 @@ import UIKit
 
 extension ViewController {
     var animations: [UIViewPropertyAnimator] {
+        
         [
             UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
                 
@@ -26,6 +27,7 @@ extension ViewController {
                 self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: UIScreen.main.bounds.maxX, dy: 0)
             }
         ]
+        
     }
     
 }
