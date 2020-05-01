@@ -16,7 +16,7 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
     private let size = UIScreen.main.bounds.size
     private let screenWidth = UIScreen.main.bounds.width
     private let gridScreenshot: UIImage! = nil
-
+    
     private var deviceIsPortraitMode = false
     private var deviceIsLandscapeMode = false
     
@@ -34,7 +34,7 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
     }
     
     // MARK: Private outlet
-    @IBOutlet private weak var mainSquare: UIView!
+    @IBOutlet weak var mainSquare: UIView!
     @IBOutlet private weak var topStackView: UIStackView!
     @IBOutlet private weak var botStackView: UIStackView!
     @IBOutlet private weak var stackViewGestureIndication: UIStackView!
@@ -52,7 +52,6 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
     @IBAction private func changeGridToDefaultConfig(_ sender: UIButton) {
         
         cleanGridLayoutView()
-        
         
         setupBottomButtons(button: bottomButtons[sender.tag])
         
@@ -221,7 +220,7 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
     }
     
     @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
-        inspectDeviceOrientationForAnimations()
+        launchTheAnimation()
         shareContentOfTheGrid()
     }
     
@@ -232,7 +231,7 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
         ac.completionWithItemsHandler = { activity, completed, items, error in
                 if completed || !completed {
                     self.ac.dismiss(animated: true) {
-                        self.inspectDeviceOrientationForReverseAnimations()
+                        self.launchTheReverseAnimation()
                     }
                     return
                 }
@@ -301,47 +300,12 @@ class ViewController: UIViewController, UIWindowSceneDelegate {
         }
     }
     
-    func inspectDeviceOrientationForAnimations() {
-        
-        if deviceIsPortraitMode {
-            let startSharingAnimationPortraitMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: -UIScreen.main.bounds.maxY)
-            }
-            
-            startSharingAnimationPortraitMode.startAnimation()
-            
-        } else {
-            let endSharingAnimationLandscapeMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: -UIScreen.main.bounds.maxX, dy: 0)
-            }
-            
-            endSharingAnimationLandscapeMode.startAnimation()
-        }
-        
+    func launchTheAnimation() {
+        deviceIsPortraitMode ? animations[0].startAnimation() : animations[1].startAnimation()
     }
     
-    func inspectDeviceOrientationForReverseAnimations() {
-        
-        if deviceIsPortraitMode  {
-            let startSharingReverseAnimationPortraitMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: 0, dy: UIScreen.main.bounds.maxY)
-            }
-            
-            startSharingReverseAnimationPortraitMode.startAnimation()
-            
-        } else {
-            let endSharingReverseAnimationLandscapeMode = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-                
-                self.mainSquare.frame = self.mainSquare.frame.offsetBy(dx: UIScreen.main.bounds.maxX, dy: 0)
-            }
-            
-            endSharingReverseAnimationLandscapeMode.startAnimation()
-        }
-        
-        
+    func launchTheReverseAnimation() {
+        deviceIsPortraitMode ? animations[2].startAnimation() : animations[3].startAnimation()
     }
     
     override internal func viewDidLoad() {
