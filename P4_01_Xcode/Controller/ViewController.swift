@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     
     // Device screen informations
     private let size = UIScreen.main.bounds.size
-
+    
     /// The swipe gesture recognizer
     private var mySwipeGestureRecognizer: UISwipeGestureRecognizer!
     
@@ -38,7 +38,7 @@ class ViewController: UIViewController {
             tagPlusImageViews = tagImageView
         }
     }
-
+    
     private var deviceIsPortraitMode = false {
         didSet {
             mySwipeGestureRecognizer.direction = deviceIsPortraitMode ? .up : .left
@@ -58,6 +58,7 @@ class ViewController: UIViewController {
     private var imageViews: [UIImageView] = []
     private var imagesFromImageViews: [UIImage] = []
     private var plusImageViews: [UIImageView] = []
+    private var dico = [Int: UIImage]()
     
     // MARK: Private action
     @IBAction private func didTapOnLayoutButton(_ sender: UIButton) {
@@ -75,7 +76,6 @@ class ViewController: UIViewController {
     /// Method to delete the views when the user tap on buttons
     private func cleanGridLayoutView() {
         
-        print(imagesFromImageViews.count)
         for view in topStackView.arrangedSubviews {
             topStackView.removeArrangedSubview(view)
         }
@@ -95,7 +95,9 @@ class ViewController: UIViewController {
         
         // Reset tables
         imageViews.removeAll()
-//        imagesFromImageViews.removeAll()
+        //        imagesFromImageViews.removeAll()
+        
+        whiteViews.removeAll()
         
         /// Reset tag
         tagImageView = 0
@@ -105,6 +107,19 @@ class ViewController: UIViewController {
         
         /// To remove the swipe gesture recognizer
         view.removeGestureRecognizer(mySwipeGestureRecognizer)
+        
+    }
+    
+    private func addUserImagesToNewLayout() {
+        
+        for (tag, image) in dico {
+            if tag + 1 > whiteViews.count {
+                continue
+            }
+            
+            imageViews[tag].image = image
+            imageViews[tag].subviews[0].removeFromSuperview()
+        }
         
     }
     
@@ -130,7 +145,7 @@ class ViewController: UIViewController {
         
         addWhiteViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
         addWhiteViewsTo(stackView: botStackView, numberOfViews: layout.numberOfBotView)
-        
+        addUserImagesToNewLayout()
     }
     
     private func addWhiteViewsTo(stackView: UIStackView, numberOfViews: Int) {
@@ -262,6 +277,8 @@ class ViewController: UIViewController {
         CameraHandler.shared.showActionSheet(vc: self)
         CameraHandler.shared.imagePickedBlock = { (image) in
             clickedView.image = image
+            
+            self.dico[viewTag] = image
             self.imagesFromImageViews.append(image)
             self.stackViewGestureIndication.isHidden = false
             self.view.addGestureRecognizer(self.mySwipeGestureRecognizer)
@@ -276,7 +293,7 @@ class ViewController: UIViewController {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
         mySwipeGestureRecognizer = swipeGesture
         deviceIsPortraitMode = size.width < size.height ? true : false
-
+        
     }
     
     private func launchTheAnimation() {
