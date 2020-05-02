@@ -11,10 +11,11 @@ import UIKit
 class PhotoLayoutProvider {
     var photoLayouts: [PhotoLayout] =  [
         // Default config
-        PhotoLayout(numberOfTopView: 2, numberOfBotView: 1),
+        PhotoLayout(numberOfTopView: 2, numberOfBotView: 1, numberOfImages: 3),
         // Reverse config
-        PhotoLayout(numberOfTopView: 1, numberOfBotView: 2),
+        PhotoLayout(numberOfTopView: 1, numberOfBotView: 2, numberOfImages: 3),
         // Cross config
-        PhotoLayout(numberOfTopView: 2, numberOfBotView: 2)
+        PhotoLayout(numberOfTopView: 2, numberOfBotView: 2, numberOfImages: 4)
     ]
+    
 }

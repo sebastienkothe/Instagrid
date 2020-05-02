@@ -18,27 +18,34 @@ class ViewController: UIViewController {
     // MARK: - Private properties
     private let photoLayoutProvider = PhotoLayoutProvider()
     
-    /// Device screen informations
-    private let screenHeight = UIScreen.main.bounds.height
+    // Device screen informations
     private let size = UIScreen.main.bounds.size
-    private let screenWidth = UIScreen.main.bounds.width
-    private var deviceIsPortraitMode = false
-    private var deviceIsLandscapeMode = false
-    
+
     /// The swipe gesture recognizer
-    private var mySwipeGestureRecognizer: UISwipeGestureRecognizer! = nil
+    private var mySwipeGestureRecognizer: UISwipeGestureRecognizer!
     
     /// ActivityViewController. Used to share the grid
-    private var ac : UIActivityViewController! = nil
+    private var ac : UIActivityViewController!
+    
+    /// The screenshot from the grid
     private let gridScreenshot: UIImage! = nil
     
-    /// Tags to identify the elements
+    // Tags to identify the elements
     private var tagPlusImageViews = 0
-    private var tagBottomButton = 0
     
     private var tagImageView = 0 {
         willSet {
             tagPlusImageViews = tagImageView
+        }
+    }
+
+    private var deviceIsPortraitMode = false {
+        didSet {
+            if deviceIsPortraitMode {
+                mySwipeGestureRecognizer.direction = .up
+            } else {
+                mySwipeGestureRecognizer.direction = .left
+            }
         }
     }
     
@@ -48,7 +55,7 @@ class ViewController: UIViewController {
     @IBOutlet private weak var stackViewGestureIndication: UIStackView!
     
     /// Bottom buttons' Outlet Collection
-    @IBOutlet private var bottomButtons: [UIButton]!
+    @IBOutlet private var layoutButtons: [UIButton]!
     
     // mainSquare's children
     private var whiteViews: [UIView] = []
@@ -57,37 +64,15 @@ class ViewController: UIViewController {
     private var plusImageViews: [UIImageView] = []
     
     // MARK: Private action
-    @IBAction private func changeGridToDefaultConfig(_ sender: UIButton) {
+    @IBAction private func didTapOnLayoutButton(_ sender: UIButton) {
         
         cleanGridLayoutView()
         
-        setupBottomButtons(button: bottomButtons[sender.tag])
+        handlePhotoLayoutButtonSelection(selectedTag: sender.tag)
         
-        let layout = photoLayoutProvider.photoLayouts[0]
+        let layout = photoLayoutProvider.photoLayouts[sender.tag]
         setupGridLayoutView(layout: layout)
         
-    }
-    
-    @IBAction private func changeGridToReverseConfig(_ sender: UIButton) {
-        
-        cleanGridLayoutView()
-        
-        
-        setupBottomButtons(button: bottomButtons[sender.tag])
-        
-        let layout = photoLayoutProvider.photoLayouts[1]
-        setupGridLayoutView(layout: layout)
-    }
-    
-    @IBAction private func changeGridToCrossConfig(_ sender: UIButton) {
-        
-        cleanGridLayoutView()
-        
-        
-        setupBottomButtons(button: bottomButtons[sender.tag])
-        
-        let layout = photoLayoutProvider.photoLayouts[2]
-        setupGridLayoutView(layout: layout)
     }
     
     // MARK: - Private methods
@@ -95,6 +80,7 @@ class ViewController: UIViewController {
     /// Method to delete the views when the user tap on buttons
     private func cleanGridLayoutView() {
         
+        print(imagesFromImageViews.count)
         for view in topStackView.arrangedSubviews {
             topStackView.removeArrangedSubview(view)
         }
@@ -112,9 +98,9 @@ class ViewController: UIViewController {
             imageView.gestureRecognizers?.removeAll()
         }
         
-        /// Reset tables
+        // Reset tables
         imageViews.removeAll()
-        imagesFromImageViews.removeAll()
+//        imagesFromImageViews.removeAll()
         
         /// Reset tag
         tagImageView = 0
@@ -125,25 +111,24 @@ class ViewController: UIViewController {
         /// To remove the swipe gesture recognizer
         view.removeGestureRecognizer(mySwipeGestureRecognizer)
         
-        resetButtonImages()
-        
     }
     
-    private func setupBottomButtons(button: UIButton) {
-        button.setImage(UIImage(named: "Selected"), for: .normal)
-    }
-    
-    private func addATag() {
-        for button in bottomButtons {
-            button.tag = tagBottomButton
-            tagBottomButton += 1
+    private func setupLayoutButtons() {
+        for (index, button) in layoutButtons.enumerated() {
+            button.tag = index
+            setupLayoutButtonImage(button: button)
         }
     }
     
-    private func resetButtonImages() {
-        for button in bottomButtons {
-            button.setImage(nil, for: .normal)
+    private func handlePhotoLayoutButtonSelection(selectedTag: Int) {
+        for button in layoutButtons {
+            button.isSelected = button.tag == selectedTag
         }
+    }
+    
+    private func setupLayoutButtonImage(button: UIButton) {
+        button.setImage(nil, for: .normal)
+        button.setImage(UIImage(named: "Selected"), for: .selected)
     }
     
     private func setupGridLayoutView(layout: PhotoLayout) {
@@ -188,6 +173,7 @@ class ViewController: UIViewController {
         imageView.contentMode = .scaleToFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            
             imageView.centerXAnchor.constraint(equalTo: whiteView.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: whiteView.centerYAnchor), imageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor), imageView.heightAnchor.constraint(equalTo: whiteView.heightAnchor)
         ])
@@ -211,7 +197,7 @@ class ViewController: UIViewController {
         
         plusImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-          
+            
             plusImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             plusImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor), plusImageView.widthAnchor.constraint(equalToConstant: 40), plusImageView.heightAnchor.constraint(equalToConstant: 40)
         ])
@@ -294,14 +280,8 @@ class ViewController: UIViewController {
     private func initializeSwipeGesture() {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
         mySwipeGestureRecognizer = swipeGesture
-        
-        if size.width < size.height {
-            mySwipeGestureRecognizer.direction = .up
-            deviceIsPortraitMode = true
-        } else {
-            mySwipeGestureRecognizer.direction = .left
-            deviceIsLandscapeMode = true
-        }
+        deviceIsPortraitMode = size.width < size.height ? true : false
+
     }
     
     private func launchTheAnimation() {
@@ -318,13 +298,11 @@ class ViewController: UIViewController {
         
         initializeSwipeGesture()
         hide(stackViewGestureIndication)
-        resetButtonImages()
-        addATag()
+        setupLayoutButtons()
     }
     
     override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        mySwipeGestureRecognizer.direction = UIDevice.current.orientation.isPortrait ? .up : .left
         deviceIsPortraitMode = UIDevice.current.orientation.isPortrait ? true : false
         
         if ac != nil {
