@@ -67,10 +67,6 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            self.imagePickedBlock?(image)
-        }
-        
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             self.imagePickedBlock?(image)
         }

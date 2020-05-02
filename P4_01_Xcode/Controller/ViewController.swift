@@ -41,11 +41,7 @@ class ViewController: UIViewController {
 
     private var deviceIsPortraitMode = false {
         didSet {
-            if deviceIsPortraitMode {
-                mySwipeGestureRecognizer.direction = .up
-            } else {
-                mySwipeGestureRecognizer.direction = .left
-            }
+            mySwipeGestureRecognizer.direction = deviceIsPortraitMode ? .up : .left
         }
     }
     
@@ -72,7 +68,6 @@ class ViewController: UIViewController {
         
         let layout = photoLayoutProvider.photoLayouts[sender.tag]
         setupGridLayoutView(layout: layout)
-        
     }
     
     // MARK: - Private methods
