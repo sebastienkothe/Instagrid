@@ -88,7 +88,7 @@ class ViewController: UIViewController {
         
         plusImageViews.removeAll()
         
-        view.removeGestureRecognizer(mySwipeGestureRecognizer)
+        mainSquare.removeGestureRecognizer(mySwipeGestureRecognizer)
         dico.removeAll()
         imagesFromImageViews.removeAll()
     }
@@ -310,7 +310,7 @@ class ViewController: UIViewController {
             self.dico[viewTag] = image
             self.imagesFromImageViews.append(image)
             self.stackViewGestureIndication.isHidden = false
-            self.view.addGestureRecognizer(self.mySwipeGestureRecognizer)
+            self.mainSquare.addGestureRecognizer(self.mySwipeGestureRecognizer)
         }
     }
     
