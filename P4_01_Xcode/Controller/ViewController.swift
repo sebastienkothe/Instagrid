@@ -49,6 +49,7 @@ class ViewController: UIViewController {
     @IBOutlet private weak var topStackView: UIStackView!
     @IBOutlet private weak var botStackView: UIStackView!
     @IBOutlet private weak var stackViewGestureIndication: UIStackView!
+    @IBOutlet weak var cleanGridButton: UIButton!
     
     /// Bottom buttons' Outlet Collection
     @IBOutlet private var layoutButtons: [UIButton]!
@@ -56,7 +57,13 @@ class ViewController: UIViewController {
     // mainSquare's children
     private var whiteViews: [UIView] = []
     private var imageViews: [UIImageView] = []
-    private var imagesFromImageViews: [UIImage] = []
+    private var imagesFromImageViews: [UIImage] = [] {
+        didSet {
+            cleanGridButton.isHidden = imagesFromImageViews.count > 0 ? false : true
+            stackViewGestureIndication.isHidden = cleanGridButton.isHidden ? true : false
+        }
+    }
+    
     private var plusImageViews: [UIImageView] = []
     private var dico = [Int: UIImage]()
     
@@ -69,6 +76,22 @@ class ViewController: UIViewController {
         
         let layout = photoLayoutProvider.photoLayouts[sender.tag]
         setupGridLayoutView(layout: layout)
+    }
+    
+    @IBAction func cleanImagesFromTheGrid() {
+        for imageView in imageViews {
+            imageView.image = nil
+            addPlusImageTo(imageView)
+        }
+        view.removeGestureRecognizer(mySwipeGestureRecognizer)
+        dico.removeAll()
+        imagesFromImageViews.removeAll()
+        
+        print(whiteViews.count,
+        imageViews.count,
+        imagesFromImageViews.count,
+        plusImageViews.count,
+        dico.count)
     }
     
     // MARK: - Private methods
@@ -95,19 +118,17 @@ class ViewController: UIViewController {
         
         // Reset tables
         imageViews.removeAll()
-        //        imagesFromImageViews.removeAll()
-        
+        plusImageViews.removeAll()
         whiteViews.removeAll()
         
         /// Reset tag
         tagImageView = 0
         
-        /// Gesture indications disable when user presses buttons
-        stackViewGestureIndication.isHidden = true
-        
-        /// To remove the swipe gesture recognizer
-        view.removeGestureRecognizer(mySwipeGestureRecognizer)
-        
+        print(whiteViews.count,
+        imageViews.count,
+        imagesFromImageViews.count,
+        plusImageViews.count,
+        dico.count)
     }
     
     private func addUserImagesToNewLayout() {
@@ -166,7 +187,6 @@ class ViewController: UIViewController {
     
     private func addImageViewTo(_ whiteView: UIView) {
         let imageView = UIImageView()
-        // Can deleted this after setup
         
         whiteView.addSubview(imageView)
         imageViews.append(imageView)
@@ -276,16 +296,23 @@ class ViewController: UIViewController {
         
         CameraHandler.shared.showActionSheet(vc: self)
         CameraHandler.shared.imagePickedBlock = { (image) in
+            
             clickedView.image = image
+            
+            if clickedView.subviews.count > 0 {
+                print(clickedView.subviews.count)
+                for plusImageView in clickedView.subviews {
+                    plusImageView.removeFromSuperview()
+                }
+                
+            }
             
             self.dico[viewTag] = image
             self.imagesFromImageViews.append(image)
             self.stackViewGestureIndication.isHidden = false
             self.view.addGestureRecognizer(self.mySwipeGestureRecognizer)
             
-            for plusImageView in self.plusImageViews where plusImageView.tag == clickedView.tag {
-                plusImageView.image = nil
-            }
+            
         }
     }
     
@@ -308,6 +335,7 @@ class ViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         
+        cleanGridButton.isHidden = true
         initializeSwipeGesture()
         hide(stackViewGestureIndication)
         setupLayoutButtons()
