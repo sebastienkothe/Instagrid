@@ -236,7 +236,7 @@ class ViewController: UIViewController {
         
         tagImageView += 1
     }
-
+    
     private func sharedShareAction() {
         
         present(ac,animated: true, completion: nil)
@@ -277,7 +277,7 @@ class ViewController: UIViewController {
         
         return image
     }
-
+    
     private func initializeSwipeGesture() {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
         mySwipeGestureRecognizer = swipeGesture
@@ -303,17 +303,17 @@ class ViewController: UIViewController {
             
             clickedView.image = image
             
-                for plusImageView in clickedView.subviews where clickedView.subviews.count > 0 {
-                    plusImageView.removeFromSuperview()
-                }
-                
+            for plusImageView in clickedView.subviews where clickedView.subviews.count > 0 {
+                plusImageView.removeFromSuperview()
+            }
+            
             self.dico[viewTag] = image
             self.imagesFromImageViews.append(image)
             self.stackViewGestureIndication.isHidden = false
             self.view.addGestureRecognizer(self.mySwipeGestureRecognizer)
         }
     }
-
+    
     @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
         launchTheAnimation()
         shareContentOfTheGrid()
