@@ -49,7 +49,7 @@ class ViewController: UIViewController {
     @IBOutlet private weak var topStackView: UIStackView!
     @IBOutlet private weak var botStackView: UIStackView!
     @IBOutlet private weak var stackViewGestureIndication: UIStackView!
-    @IBOutlet weak var cleanGridButton: UIButton!
+    @IBOutlet private weak var cleanGridButton: UIButton!
     
     /// Bottom buttons' Outlet Collection
     @IBOutlet private var layoutButtons: [UIButton]!
@@ -57,6 +57,7 @@ class ViewController: UIViewController {
     // mainSquare's children
     private var whiteViews: [UIView] = []
     private var imageViews: [UIImageView] = []
+    
     private var imagesFromImageViews: [UIImage] = [] {
         didSet {
             cleanGridButton.isHidden = imagesFromImageViews.count > 0 ? false : true
@@ -78,20 +79,18 @@ class ViewController: UIViewController {
         setupGridLayoutView(layout: layout)
     }
     
-    @IBAction func cleanImagesFromTheGrid() {
+    @IBAction private func cleanImagesFromTheGrid() {
+        
         for imageView in imageViews {
             imageView.image = nil
             addPlusImageTo(imageView)
         }
+        
+        plusImageViews.removeAll()
+        
         view.removeGestureRecognizer(mySwipeGestureRecognizer)
         dico.removeAll()
         imagesFromImageViews.removeAll()
-        
-        print(whiteViews.count,
-        imageViews.count,
-        imagesFromImageViews.count,
-        plusImageViews.count,
-        dico.count)
     }
     
     // MARK: - Private methods
@@ -107,8 +106,8 @@ class ViewController: UIViewController {
             botStackView.removeArrangedSubview(view)
         }
         
-        for plusImageViews in plusImageViews {
-            plusImageViews.removeFromSuperview()
+        for whiteView in whiteViews {
+            whiteView.removeFromSuperview()
         }
         
         for imageView in imageViews {
@@ -116,19 +115,17 @@ class ViewController: UIViewController {
             imageView.gestureRecognizers?.removeAll()
         }
         
+        for plusImageViews in plusImageViews {
+            plusImageViews.removeFromSuperview()
+        }
+        
         // Reset tables
-        imageViews.removeAll()
-        plusImageViews.removeAll()
         whiteViews.removeAll()
+        plusImageViews.removeAll()
+        imageViews.removeAll()
         
         /// Reset tag
         tagImageView = 0
-        
-        print(whiteViews.count,
-        imageViews.count,
-        imagesFromImageViews.count,
-        plusImageViews.count,
-        dico.count)
     }
     
     private func addUserImagesToNewLayout() {
@@ -181,8 +178,6 @@ class ViewController: UIViewController {
             
             addImageViewTo(whiteView)
         }
-        
-        
     }
     
     private func addImageViewTo(_ whiteView: UIView) {
@@ -194,8 +189,6 @@ class ViewController: UIViewController {
         setupImageView(imageView, whiteView)
         addTapGestureRecognizerToImageViews(imageView: imageView)
         addPlusImageTo(imageView)
-        
-        
     }
     
     private func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
@@ -243,12 +236,7 @@ class ViewController: UIViewController {
         
         tagImageView += 1
     }
-    
-    @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
-        launchTheAnimation()
-        shareContentOfTheGrid()
-    }
-    
+
     private func sharedShareAction() {
         
         present(ac,animated: true, completion: nil)
@@ -289,33 +277,7 @@ class ViewController: UIViewController {
         
         return image
     }
-    
-    @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
-        guard let viewTag = sender.view?.tag else { return }
-        let clickedView = imageViews[viewTag]
-        
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
-            
-            clickedView.image = image
-            
-            if clickedView.subviews.count > 0 {
-                print(clickedView.subviews.count)
-                for plusImageView in clickedView.subviews {
-                    plusImageView.removeFromSuperview()
-                }
-                
-            }
-            
-            self.dico[viewTag] = image
-            self.imagesFromImageViews.append(image)
-            self.stackViewGestureIndication.isHidden = false
-            self.view.addGestureRecognizer(self.mySwipeGestureRecognizer)
-            
-            
-        }
-    }
-    
+
     private func initializeSwipeGesture() {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
         mySwipeGestureRecognizer = swipeGesture
@@ -329,6 +291,32 @@ class ViewController: UIViewController {
     
     private func launchTheReverseAnimation() {
         deviceIsPortraitMode ? animations[2].startAnimation() : animations[3].startAnimation()
+    }
+    
+    // MARK: @objc Private methods
+    @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
+        guard let viewTag = sender.view?.tag else { return }
+        let clickedView = imageViews[viewTag]
+        
+        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.imagePickedBlock = { (image) in
+            
+            clickedView.image = image
+            
+                for plusImageView in clickedView.subviews where clickedView.subviews.count > 0 {
+                    plusImageView.removeFromSuperview()
+                }
+                
+            self.dico[viewTag] = image
+            self.imagesFromImageViews.append(image)
+            self.stackViewGestureIndication.isHidden = false
+            self.view.addGestureRecognizer(self.mySwipeGestureRecognizer)
+        }
+    }
+
+    @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
+        launchTheAnimation()
+        shareContentOfTheGrid()
     }
     
     // MARK: - Internal methods
