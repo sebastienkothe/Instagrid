@@ -60,20 +60,23 @@ class ViewController: UIViewController {
     
     // mainSquare's children
     private var whiteViews: [UIView] = []
+    
+    private var numberOfWhiteViews = 0
+    
     private var imageViews: [UIImageView] = []
     private var plusImageViews: [UIImageView] = []
     private var imagesFromImageViews: [UIImage] = [] {
         didSet {
             cleanGridButton.isHidden = imagesFromImageViews.count > 0 ? false : true
-            stackViewGestureIndication.isHidden = cleanGridButton.isHidden ? true : false
         }
     }
     
     /// Used to save grid images
-    private var userPhotosDictionary = [Int: UIImage]()
+    private var userPhotosDictionary: [Int: UIImage] = [:]
     
     // MARK: Private action
     @IBAction private func didTapOnLayoutButton(_ sender: UIButton) {
+        mainSquare.addGestureRecognizer(mySwipeGestureRecognizer)
         
         cleanGridLayoutView()
         
@@ -90,11 +93,10 @@ class ViewController: UIViewController {
             addPlusImageTo(imageView)
         }
         
-        mainSquare.removeGestureRecognizer(mySwipeGestureRecognizer)
-        
         imagesFromImageViews.removeAll()
         plusImageViews.removeAll()
         userPhotosDictionary.removeAll()
+        handleTheSwipeGestureRecognizer()
     }
     
     // MARK: - Private methods
@@ -173,6 +175,48 @@ class ViewController: UIViewController {
         addWhiteViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
         addWhiteViewsTo(stackView: botStackView, numberOfViews: layout.numberOfBotView)
         addUserImagesToNewLayout()
+        numberOfWhiteViews = whiteViews.count
+        handleTheSwipeGestureRecognizer()
+    }
+    
+    /// Method to to prevent the user from sharing an empty grid
+    private func handleTheSwipeGestureRecognizer() {
+        
+        guard !(numberOfWhiteViews == 3 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
+            handleStateOfTheSwipeGesture(state: "Off")
+            print("Off")
+            return
+        }
+        
+        guard !(numberOfWhiteViews == 4 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
+            handleStateOfTheSwipeGesture(state: "On")
+            print("On")
+            return
+        }
+        
+        guard userPhotosDictionary.count >= 1 else {
+            handleStateOfTheSwipeGesture(state: "Off")
+            print("Off")
+            return
+        }
+        
+        guard userPhotosDictionary.count < 1 else {
+            handleStateOfTheSwipeGesture(state: "On")
+            print("On")
+            return
+        }
+        
+    }
+    
+    /// Method to handle the state of the swipe gesture
+    private func handleStateOfTheSwipeGesture(state: String) {
+        if state == "On" {
+            stackViewGestureIndication.isHidden = false
+            mySwipeGestureRecognizer.isEnabled = true
+        } else {
+            stackViewGestureIndication.isHidden = true
+            mySwipeGestureRecognizer.isEnabled = false
+        }
     }
     
     /// Method to add the white views
@@ -209,8 +253,7 @@ class ViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             
-            imageView.centerXAnchor.constraint(equalTo: whiteView.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: whiteView.centerYAnchor), imageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor), imageView.heightAnchor.constraint(equalTo: whiteView.heightAnchor)
+            imageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor), imageView.heightAnchor.constraint(equalTo: whiteView.heightAnchor)
         ])
         
     }
@@ -348,9 +391,8 @@ class ViewController: UIViewController {
             }
             
             self.userPhotosDictionary[viewTag] = image
+            self.handleTheSwipeGestureRecognizer()
             self.imagesFromImageViews.append(image)
-            self.stackViewGestureIndication.isHidden = false
-            self.mainSquare.addGestureRecognizer(self.mySwipeGestureRecognizer)
         }
     }
     
