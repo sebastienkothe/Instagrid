@@ -10,6 +10,8 @@ import UIKit
 
 
 extension ViewController {
+    
+    /// This property groups all the animations of the application
     var animations: [UIViewPropertyAnimator] {
         
         [

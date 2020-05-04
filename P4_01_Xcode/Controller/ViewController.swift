@@ -24,11 +24,14 @@ class ViewController: UIViewController {
     /// The swipe gesture recognizer
     private var mySwipeGestureRecognizer: UISwipeGestureRecognizer!
     
-    /// ActivityViewController. Used to share the grid
-    private var ac : UIActivityViewController!
-    
     /// The screenshot from the grid
     private let gridScreenshot: UIImage! = nil
+    
+    /// ActivityViewController. Used to share the grid
+    var ac : UIActivityViewController! = nil
+    
+    /// To check whether the application went into the background or not
+    private var isAppMovedToBackground = false
     
     // Tags to identify the elements
     private var tagPlusImageViews = 0
@@ -39,6 +42,7 @@ class ViewController: UIViewController {
         }
     }
     
+    /// Property used to change the direction of the swipe gesture recognizer
     private var deviceIsPortraitMode = false {
         didSet {
             mySwipeGestureRecognizer.direction = deviceIsPortraitMode ? .up : .left
@@ -57,7 +61,7 @@ class ViewController: UIViewController {
     // mainSquare's children
     private var whiteViews: [UIView] = []
     private var imageViews: [UIImageView] = []
-    
+    private var plusImageViews: [UIImageView] = []
     private var imagesFromImageViews: [UIImage] = [] {
         didSet {
             cleanGridButton.isHidden = imagesFromImageViews.count > 0 ? false : true
@@ -65,8 +69,8 @@ class ViewController: UIViewController {
         }
     }
     
-    private var plusImageViews: [UIImageView] = []
-    private var dico = [Int: UIImage]()
+    /// Used to save grid images
+    private var userPhotosDictionary = [Int: UIImage]()
     
     // MARK: Private action
     @IBAction private func didTapOnLayoutButton(_ sender: UIButton) {
@@ -86,11 +90,11 @@ class ViewController: UIViewController {
             addPlusImageTo(imageView)
         }
         
-        plusImageViews.removeAll()
-        
         mainSquare.removeGestureRecognizer(mySwipeGestureRecognizer)
-        dico.removeAll()
+        
         imagesFromImageViews.removeAll()
+        plusImageViews.removeAll()
+        userPhotosDictionary.removeAll()
     }
     
     // MARK: - Private methods
@@ -121,16 +125,17 @@ class ViewController: UIViewController {
         
         // Reset tables
         whiteViews.removeAll()
-        plusImageViews.removeAll()
         imageViews.removeAll()
+        plusImageViews.removeAll()
         
         /// Reset tag
         tagImageView = 0
     }
     
+    /// Method for adding user images to the new grid from the userPhotosDictionary
     private func addUserImagesToNewLayout() {
         
-        for (tag, image) in dico {
+        for (tag, image) in userPhotosDictionary {
             if tag + 1 > whiteViews.count {
                 continue
             }
@@ -141,6 +146,7 @@ class ViewController: UIViewController {
         
     }
     
+    /// Method for configuring buttons
     private func setupLayoutButtons() {
         for (index, button) in layoutButtons.enumerated() {
             button.tag = index
@@ -148,17 +154,20 @@ class ViewController: UIViewController {
         }
     }
     
+    /// Method to manage if the button is selected or not
     private func handlePhotoLayoutButtonSelection(selectedTag: Int) {
         for button in layoutButtons {
             button.isSelected = button.tag == selectedTag
         }
     }
     
+    /// Method to define button images
     private func setupLayoutButtonImage(button: UIButton) {
         button.setImage(nil, for: .normal)
         button.setImage(UIImage(named: "Selected"), for: .selected)
     }
     
+    /// Method to define button images
     private func setupGridLayoutView(layout: PhotoLayout) {
         
         addWhiteViewsTo(stackView: topStackView, numberOfViews: layout.numberOfTopView)
@@ -166,6 +175,7 @@ class ViewController: UIViewController {
         addUserImagesToNewLayout()
     }
     
+    /// Method to add the white views
     private func addWhiteViewsTo(stackView: UIStackView, numberOfViews: Int) {
         
         for _ in 1...numberOfViews {
@@ -180,6 +190,7 @@ class ViewController: UIViewController {
         }
     }
     
+    /// Method to add the an UIImageView in a whiteView
     private func addImageViewTo(_ whiteView: UIView) {
         let imageView = UIImageView()
         
@@ -191,6 +202,7 @@ class ViewController: UIViewController {
         addPlusImageTo(imageView)
     }
     
+    /// Method to add constraints to imageView
     private func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
         
         imageView.contentMode = .scaleToFill
@@ -203,6 +215,7 @@ class ViewController: UIViewController {
         
     }
     
+    /// Method to add plusImage to imageView
     private func addPlusImageTo(_ view: UIView) {
         
         let plusImageView = UIImageView()
@@ -216,6 +229,7 @@ class ViewController: UIViewController {
         
     }
     
+    /// Method to add constraints to plusImageView
     private func setupPlusImageViews(_ plusImageView: UIImageView, _ view: UIView) {
         
         plusImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -227,6 +241,7 @@ class ViewController: UIViewController {
         
     }
     
+    /// Method to add tap gesture recognizer  to imageView
     private func addTapGestureRecognizerToImageViews(imageView: UIImageView) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView(sender:)))
         
@@ -237,11 +252,15 @@ class ViewController: UIViewController {
         tagImageView += 1
     }
     
-    private func sharedShareAction() {
+    /// Method to handle the UIActivityViewController
+    private func handleTheActivityViewController() {
         
+        // To present it
         present(ac,animated: true, completion: nil)
         
+        // To handle the completion
         ac.completionWithItemsHandler = { activity, completed, items, error in
+            
             if completed || !completed {
                 self.ac.dismiss(animated: true) {
                     self.launchTheReverseAnimation()
@@ -251,24 +270,27 @@ class ViewController: UIViewController {
         }
     }
     
+    /// Method to share the screenshot
     private func shareContentOfTheGrid() {
         
         switch mySwipeGestureRecognizer.state {
-            
         case .ended:
             let items = [screenShotMethod()]
             
             ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
-            sharedShareAction()
+            
+            handleTheActivityViewController()
         default:
             break
         }
     }
     
+    /// Method to share an UIView
     private func hide(_ element: UIView) {
         element.isHidden = true
     }
     
+    /// Method to take a screenshot of mainsquare view
     private func screenShotMethod() -> UIImage? {
         let renderer = UIGraphicsImageRenderer(size: mainSquare.bounds.size)
         let image = renderer.image { ctx in
@@ -278,6 +300,7 @@ class ViewController: UIViewController {
         return image
     }
     
+    /// Method to initialize the swipe gesture recognizer
     private func initializeSwipeGesture() {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(launchTheSwipeGestureAnimation(_:)))
         mySwipeGestureRecognizer = swipeGesture
@@ -285,15 +308,32 @@ class ViewController: UIViewController {
         
     }
     
+    /// Method to start the animation according to the orientation of the iPhone
     private func launchTheAnimation() {
         deviceIsPortraitMode ? animations[0].startAnimation() : animations[1].startAnimation()
     }
     
+    /// Method to start the reverse animation according to the orientation of the iPhone
     private func launchTheReverseAnimation() {
         deviceIsPortraitMode ? animations[2].startAnimation() : animations[3].startAnimation()
     }
     
+    /// Method to check if a view is visible or no
+    private func isVisible(view: UIView) -> Bool {
+        func isVisible(view: UIView, inView: UIView?) -> Bool {
+            guard let inView = inView else { return true }
+            let viewFrame = inView.convert(view.bounds, from: view)
+            if viewFrame.intersects(inView.bounds) {
+                return isVisible(view: view, inView: inView.superview)
+            }
+            return false
+        }
+        return isVisible(view: view, inView: view.superview)
+    }
+    
     // MARK: @objc Private methods
+    
+    /// Method to add the photos selected by the user in the view
     @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
         guard let viewTag = sender.view?.tag else { return }
         let clickedView = imageViews[viewTag]
@@ -307,21 +347,46 @@ class ViewController: UIViewController {
                 plusImageView.removeFromSuperview()
             }
             
-            self.dico[viewTag] = image
+            self.userPhotosDictionary[viewTag] = image
             self.imagesFromImageViews.append(image)
             self.stackViewGestureIndication.isHidden = false
             self.mainSquare.addGestureRecognizer(self.mySwipeGestureRecognizer)
         }
     }
     
+    /// Method to launch the swipe gesture animation
     @objc private func launchTheSwipeGestureAnimation(_ sender: UISwipeGestureRecognizer) {
         launchTheAnimation()
         shareContentOfTheGrid()
     }
     
+    /// Method to manage the behavior of the UIActivityViewController if the application is moved in the background
+    @objc func backgroundCall() {
+        isAppMovedToBackground = true
+        
+        if ac != nil {
+            ac.dismiss(animated: true, completion: {
+                if !self.isVisible(view: self.mainSquare) {
+                    self.launchTheReverseAnimation()
+                }
+            })
+        }
+    }
+    
+    /// Method to manage the behavior of the application when the user is in the foreground
+    @objc func foregroundCall() {
+        isAppMovedToBackground = false
+    }
+    
     // MARK: - Internal methods
     override internal func viewDidLoad() {
         super.viewDidLoad()
+        
+        let notificationCenter = NotificationCenter.default
+        
+        notificationCenter.addObserver(self, selector: #selector(backgroundCall), name: UIApplication.willResignActiveNotification, object: nil)
+        
+        notificationCenter.addObserver(self, selector: #selector(foregroundCall), name: UIApplication.didBecomeActiveNotification, object: nil)
         
         cleanGridButton.isHidden = true
         initializeSwipeGesture()
@@ -329,6 +394,7 @@ class ViewController: UIViewController {
         setupLayoutButtons()
     }
     
+    /// Method to manage the behavior of the application when the user changes the orientation of his phone
     override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
         deviceIsPortraitMode = UIDevice.current.orientation.isPortrait ? true : false

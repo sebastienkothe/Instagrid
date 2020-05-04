@@ -16,6 +16,8 @@ class CameraHandler: NSObject{
     var imagePickedBlock: ((UIImage) -> Void)?
     
     // MARK: - Internal methods
+    
+    /// Method that allows the user to select a photo from their photo library or to use the phone camera
     func showActionSheet(vc: UIViewController) {
         currentVC = vc
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -37,6 +39,7 @@ class CameraHandler: NSObject{
     fileprivate var currentVC: UIViewController!
     
     //MARK: Private methods
+    
     private func camera() {
         if UIImagePickerController.isSourceTypeAvailable(.camera){
             let myPickerController = UIImagePickerController()
@@ -65,6 +68,7 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
         currentVC.dismiss(animated: true, completion: nil)
     }
     
+    /// This method allows to recover the photo (info dictionary)
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
