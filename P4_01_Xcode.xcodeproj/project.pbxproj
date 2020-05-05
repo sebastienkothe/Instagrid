@@ -79,7 +79,6 @@
 		362DD580244B60FD00E3A6F7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				36752CD8245C213600FC3F7F /* PropertyAnimators.swift */,
 				363D681D24531B45007ED48C /* CameraHandler.swift */,
 				369BE933245439A300AA4C7D /* PhotoLayout.swift */,
 				369BE935245439DC00AA4C7D /* PhotoLayoutProvider.swift */,
@@ -99,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				362DD570244B60E200E3A6F7 /* ViewController.swift */,
+				36752CD8245C213600FC3F7F /* PropertyAnimators.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
