@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina3_5" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Instagrid View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="P4_01_Xcode" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="InstagridViewController" customModule="P4_01_Xcode" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="2Ld-AT-D9b" userLabel="instagridLabel">
-                                <rect key="frame" x="101.5" y="9" width="117" height="35"/>
+                                <rect key="frame" x="129" y="9" width="117" height="35"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Instagrid">
                                         <attributes>
@@ -40,7 +40,7 @@
                                 </variation>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="sCL-cK-oU8" userLabel="gestureIndicationStackView">
-                                <rect key="frame" x="55" y="55.5" width="210" height="47.5"/>
+                                <rect key="frame" x="82.5" y="121.5" width="210" height="47.5"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Arrow Up" translatesAutoresizingMaskIntoConstraints="NO" id="HVV-yt-eay" userLabel="arrow">
                                         <rect key="frame" x="100" y="0.0" width="10" height="13"/>
@@ -120,16 +120,16 @@
                                 </variation>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tIw-JV-OeG" userLabel="mainSquare">
-                                <rect key="frame" x="33" y="113" width="254" height="254"/>
+                                <rect key="frame" x="33" y="179" width="309" height="309"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Lf3-EW-IvL" userLabel="mainsSquareStackView">
-                                        <rect key="frame" x="15" y="15" width="224" height="224"/>
+                                        <rect key="frame" x="15" y="15" width="279" height="279"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="xHC-GO-MFG" userLabel="topStackView">
-                                                <rect key="frame" x="0.0" y="0.0" width="224" height="104.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="279" height="132"/>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="hoE-HZ-9yN" userLabel="botStackView">
-                                                <rect key="frame" x="0.0" y="119.5" width="224" height="104.5"/>
+                                                <rect key="frame" x="0.0" y="147" width="279" height="132"/>
                                             </stackView>
                                         </subviews>
                                     </stackView>
@@ -184,10 +184,10 @@
                                 </variation>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Ro5-1A-wdj" userLabel="buttonsStackView">
-                                <rect key="frame" x="43" y="397" width="234" height="68"/>
+                                <rect key="frame" x="43" y="565.5" width="289" height="86.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alI-gO-13C" userLabel="layoutButtons1">
-                                        <rect key="frame" x="0.0" y="0.0" width="68" height="68"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="86.5" height="86.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="alI-gO-13C" secondAttribute="height" multiplier="1:1" id="evT-bI-v3E"/>
                                         </constraints>
@@ -197,7 +197,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ac-3a-cf2" userLabel="layoutButtons2">
-                                        <rect key="frame" x="83" y="0.0" width="68" height="68"/>
+                                        <rect key="frame" x="101.5" y="0.0" width="86" height="86.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="7Ac-3a-cf2" secondAttribute="height" multiplier="1:1" id="Fsk-5f-tPK"/>
                                         </constraints>
@@ -207,7 +207,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DNH-vI-7f8" userLabel="layoutButtons3">
-                                        <rect key="frame" x="166" y="0.0" width="68" height="68"/>
+                                        <rect key="frame" x="202.5" y="0.0" width="86.5" height="86.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="DNH-vI-7f8" secondAttribute="height" multiplier="1:1" id="FIj-qN-URC"/>
                                         </constraints>
@@ -221,7 +221,7 @@
                                 <variation key="heightClass=compact-widthClass=regular" axis="vertical" spacing="35"/>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ntU-P4-8Qf">
-                                <rect key="frame" x="256" y="20" width="44" height="44"/>
+                                <rect key="frame" x="311" y="20" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ntU-P4-8Qf" secondAttribute="height" multiplier="1:1" id="8ee-ke-Glo"/>
                                     <constraint firstAttribute="width" constant="44" id="yJW-sA-Ctf"/>
@@ -231,7 +231,7 @@
                                     <attributedString key="attributedTitle"/>
                                 </state>
                                 <connections>
-                                    <action selector="cleanImagesFromTheGrid" destination="BYZ-38-t0r" eventType="touchUpInside" id="KWh-ks-xdC"/>
+                                    <action selector="cleanImagesFromTheGridButton" destination="BYZ-38-t0r" eventType="touchUpInside" id="Frg-BW-hg7"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -358,6 +358,17 @@
                                 <exclude reference="s2S-6d-jcK"/>
                                 <exclude reference="y29-X2-lId"/>
                                 <exclude reference="z4o-Ed-q1y"/>
+                                <exclude reference="oG9-Rh-pH2"/>
+                                <exclude reference="2MB-e9-0vl"/>
+                                <exclude reference="4Bc-q2-u7w"/>
+                                <exclude reference="EdN-li-jbc"/>
+                                <exclude reference="Fxg-X4-ThG"/>
+                                <exclude reference="k5E-4t-CVG"/>
+                                <exclude reference="kRI-um-euf"/>
+                                <exclude reference="mMU-fu-DY9"/>
+                                <exclude reference="s2T-7P-a8x"/>
+                                <exclude reference="t9A-QN-ZaT"/>
+                                <exclude reference="zjH-vg-5ab"/>
                                 <exclude reference="Ln3-n5-Ppc"/>
                                 <exclude reference="TFQ-rJ-olq"/>
                                 <exclude reference="Ti8-Iw-5fA"/>
@@ -370,17 +381,6 @@
                                 <exclude reference="xSI-rs-61M"/>
                                 <exclude reference="xnh-2O-vgO"/>
                                 <exclude reference="yeK-I8-lyS"/>
-                                <exclude reference="2MB-e9-0vl"/>
-                                <exclude reference="4Bc-q2-u7w"/>
-                                <exclude reference="EdN-li-jbc"/>
-                                <exclude reference="Fxg-X4-ThG"/>
-                                <exclude reference="k5E-4t-CVG"/>
-                                <exclude reference="kRI-um-euf"/>
-                                <exclude reference="mMU-fu-DY9"/>
-                                <exclude reference="s2T-7P-a8x"/>
-                                <exclude reference="t9A-QN-ZaT"/>
-                                <exclude reference="zjH-vg-5ab"/>
-                                <exclude reference="oG9-Rh-pH2"/>
                                 <exclude reference="0SP-UT-wdc"/>
                                 <exclude reference="Vk3-Jb-orB"/>
                                 <exclude reference="1RZ-7a-uXu"/>
@@ -418,6 +418,14 @@
                                 <exclude reference="mL5-4I-PA9"/>
                                 <exclude reference="s2S-6d-jcK"/>
                                 <exclude reference="y29-X2-lId"/>
+                                <exclude reference="9IY-Sb-5ca"/>
+                                <include reference="oG9-Rh-pH2"/>
+                                <exclude reference="2MB-e9-0vl"/>
+                                <exclude reference="4Bc-q2-u7w"/>
+                                <exclude reference="Fxg-X4-ThG"/>
+                                <include reference="mMU-fu-DY9"/>
+                                <exclude reference="sjR-gg-zKC"/>
+                                <include reference="zjH-vg-5ab"/>
                                 <exclude reference="B9P-EA-Kgb"/>
                                 <exclude reference="PRx-wR-v2g"/>
                                 <include reference="a62-Eb-H18"/>
@@ -426,14 +434,6 @@
                                 <exclude reference="xSI-rs-61M"/>
                                 <exclude reference="xnh-2O-vgO"/>
                                 <exclude reference="yeK-I8-lyS"/>
-                                <exclude reference="2MB-e9-0vl"/>
-                                <exclude reference="4Bc-q2-u7w"/>
-                                <exclude reference="Fxg-X4-ThG"/>
-                                <include reference="mMU-fu-DY9"/>
-                                <exclude reference="sjR-gg-zKC"/>
-                                <include reference="zjH-vg-5ab"/>
-                                <exclude reference="9IY-Sb-5ca"/>
-                                <include reference="oG9-Rh-pH2"/>
                                 <include reference="0SP-UT-wdc"/>
                                 <exclude reference="iou-9b-Ynr"/>
                                 <include reference="FkM-gl-LoH"/>
@@ -457,6 +457,12 @@
                                 <include reference="Rqn-h6-FL2"/>
                                 <exclude reference="mL5-4I-PA9"/>
                                 <exclude reference="z4o-Ed-q1y"/>
+                                <exclude reference="EdN-li-jbc"/>
+                                <include reference="k5E-4t-CVG"/>
+                                <include reference="kRI-um-euf"/>
+                                <exclude reference="s2T-7P-a8x"/>
+                                <exclude reference="sjR-gg-zKC"/>
+                                <exclude reference="t9A-QN-ZaT"/>
                                 <exclude reference="9AV-uJ-UN3"/>
                                 <exclude reference="B9P-EA-Kgb"/>
                                 <exclude reference="Ln3-n5-Ppc"/>
@@ -468,12 +474,6 @@
                                 <exclude reference="Y0t-sf-5h4"/>
                                 <exclude reference="o2C-aq-AFA"/>
                                 <exclude reference="uQu-gt-ALB"/>
-                                <exclude reference="EdN-li-jbc"/>
-                                <include reference="k5E-4t-CVG"/>
-                                <include reference="kRI-um-euf"/>
-                                <exclude reference="s2T-7P-a8x"/>
-                                <exclude reference="sjR-gg-zKC"/>
-                                <exclude reference="t9A-QN-ZaT"/>
                                 <include reference="Vk3-Jb-orB"/>
                                 <exclude reference="iou-9b-Ynr"/>
                                 <include reference="1RZ-7a-uXu"/>
@@ -492,19 +492,19 @@
                     </view>
                     <navigationItem key="navigationItem" id="ief-ZJ-wdd"/>
                     <connections>
-                        <outlet property="botStackView" destination="hoE-HZ-9yN" id="uMw-Fl-I5n"/>
                         <outlet property="cleanGridButton" destination="ntU-P4-8Qf" id="9Vq-7Z-cBi"/>
-                        <outlet property="mainSquare" destination="tIw-JV-OeG" id="sEp-fo-UwS"/>
+                        <outlet property="gridBotStackView" destination="hoE-HZ-9yN" id="uMw-Fl-I5n"/>
+                        <outlet property="gridPhotoLayoutContainerView" destination="tIw-JV-OeG" id="sEp-fo-UwS"/>
+                        <outlet property="gridTopStackView" destination="xHC-GO-MFG" id="goj-jJ-iQK"/>
                         <outlet property="stackViewGestureIndication" destination="sCL-cK-oU8" id="s4d-s5-O9K"/>
-                        <outlet property="topStackView" destination="xHC-GO-MFG" id="goj-jJ-iQK"/>
-                        <outletCollection property="layoutButtons" destination="7Ac-3a-cf2" collectionClass="NSMutableArray" id="Q3T-vz-ccJ"/>
-                        <outletCollection property="layoutButtons" destination="alI-gO-13C" collectionClass="NSMutableArray" id="4XS-En-KOT"/>
-                        <outletCollection property="layoutButtons" destination="DNH-vI-7f8" collectionClass="NSMutableArray" id="Nhj-pS-coj"/>
+                        <outletCollection property="photoLayoutButtons" destination="7Ac-3a-cf2" collectionClass="NSMutableArray" id="Q3T-vz-ccJ"/>
+                        <outletCollection property="photoLayoutButtons" destination="alI-gO-13C" collectionClass="NSMutableArray" id="4XS-En-KOT"/>
+                        <outletCollection property="photoLayoutButtons" destination="DNH-vI-7f8" collectionClass="NSMutableArray" id="Nhj-pS-coj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-193" y="1919"/>
+            <point key="canvasLocation" x="312.80000000000001" y="1923.6881559220392"/>
         </scene>
     </scenes>
     <resources>

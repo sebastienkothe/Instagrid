@@ -11,5 +11,4 @@ import UIKit
 struct PhotoLayout {
     let numberOfTopView: Int
     let numberOfBotView: Int
-    let numberOfImages: Int
 }
