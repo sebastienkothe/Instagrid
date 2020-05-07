@@ -18,8 +18,8 @@ class CameraHandler: NSObject{
     // MARK: - Internal methods
     
     /// Method that allows the user to select a photo from their photo library or to use the phone camera
-    func showActionSheet(vc: UIViewController) {
-        currentVC = vc
+    func showActionSheet(viewController: UIViewController) {
+        currentViewController = viewController
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alert:UIAlertAction!) -> Void in
@@ -32,11 +32,11 @@ class CameraHandler: NSObject{
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        vc.present(actionSheet, animated: true, completion: nil)
+        viewController.present(actionSheet, animated: true, completion: nil)
     }
     
     //MARK: File private Properties
-    fileprivate var currentVC: UIViewController!
+    fileprivate var currentViewController: UIViewController!
     
     //MARK: Private methods
     
@@ -46,7 +46,7 @@ class CameraHandler: NSObject{
             myPickerController.delegate = self;
             myPickerController.sourceType = .camera
             myPickerController.allowsEditing = true
-            currentVC.present(myPickerController, animated: true, completion: nil)
+            currentViewController.present(myPickerController, animated: true, completion: nil)
         }
     }
     
@@ -56,7 +56,7 @@ class CameraHandler: NSObject{
             myPickerController.delegate = self;
             myPickerController.sourceType = .photoLibrary
             myPickerController.allowsEditing = true
-            currentVC.present(myPickerController, animated: true, completion: nil)
+            currentViewController.present(myPickerController, animated: true, completion: nil)
         }
         
     }
@@ -65,7 +65,7 @@ class CameraHandler: NSObject{
 
 extension CameraHandler: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        currentVC.dismiss(animated: true, completion: nil)
+        currentViewController.dismiss(animated: true, completion: nil)
     }
     
     /// This method allows to recover the photo (info dictionary)
@@ -75,7 +75,7 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
             self.imagePickedBlock?(image)
         }
         
-        currentVC.dismiss(animated: true, completion: nil)
+        currentViewController.dismiss(animated: true, completion: nil)
     }
     
 }

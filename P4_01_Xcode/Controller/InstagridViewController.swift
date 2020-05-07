@@ -98,7 +98,7 @@ class InstagridViewController: UIViewController {
         plusImageViews.removeAll()
         userPhotosDictionary.removeAll()
         
-        handleTheSwipeGestureRecognizer()
+        handleSwipeGestureRecognizer()
     }
     
     // MARK: - Private methods
@@ -178,33 +178,29 @@ class InstagridViewController: UIViewController {
         addWhiteViewsTo(stackView: gridBotStackView, numberOfViews: layout.numberOfBotView)
         addUserImagesToNewLayout()
         numberOfWhiteViews = whiteViews.count
-        handleTheSwipeGestureRecognizer()
+        handleSwipeGestureRecognizer()
     }
     
     /// Method to to prevent the user from sharing an empty grid
-    private func handleTheSwipeGestureRecognizer() {
+    private func handleSwipeGestureRecognizer() {
         
         guard !(numberOfWhiteViews == 3 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
             handleStateSwipeGesture(state: "Off")
-            print("Off")
             return
         }
         
         guard !(numberOfWhiteViews == 4 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
             handleStateSwipeGesture(state: "On")
-            print("On")
             return
         }
         
         guard userPhotosDictionary.count >= 1 else {
             handleStateSwipeGesture(state: "Off")
-            print("Off")
             return
         }
         
         guard userPhotosDictionary.count < 1 else {
             handleStateSwipeGesture(state: "On")
-            print("On")
             return
         }
         
@@ -386,7 +382,7 @@ class InstagridViewController: UIViewController {
         guard let viewTag = sender.view?.tag else { return }
         let clickedView = imageViews[viewTag]
         
-        CameraHandler.shared.showActionSheet(vc: self)
+        CameraHandler.shared.showActionSheet(viewController: self)
         CameraHandler.shared.imagePickedBlock = { (image) in
             
             clickedView.image = image
@@ -396,7 +392,7 @@ class InstagridViewController: UIViewController {
             }
             
             self.userPhotosDictionary[viewTag] = image
-            self.handleTheSwipeGestureRecognizer()
+            self.handleSwipeGestureRecognizer()
             self.imagesFromImageViews.append(image)
         }
         
