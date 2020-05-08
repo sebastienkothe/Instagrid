@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class CameraHandler: NSObject{
+class CameraHandler: NSObject {
     
     //MARK: Internal Properties
     static let shared = CameraHandler()
@@ -41,7 +41,7 @@ class CameraHandler: NSObject{
     //MARK: Private methods
     
     private func camera() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera){
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let myPickerController = UIImagePickerController()
             myPickerController.delegate = self;
             myPickerController.sourceType = .camera
@@ -51,7 +51,7 @@ class CameraHandler: NSObject{
     }
     
     private func photoLibrary() {
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let myPickerController = UIImagePickerController()
             myPickerController.delegate = self;
             myPickerController.sourceType = .photoLibrary
@@ -63,7 +63,8 @@ class CameraHandler: NSObject{
     
 }
 
-extension CameraHandler: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension CameraHandler: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         currentViewController.dismiss(animated: true, completion: nil)
     }
@@ -71,7 +72,7 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     /// This method allows to recover the photo (info dictionary)
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+        if let image = info[.editedImage] as? UIImage {
             self.imagePickedBlock?(image)
         }
         

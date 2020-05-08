@@ -94,8 +94,11 @@ class InstagridViewController: UIViewController {
             addPlusImageTo(imageView)
         }
         
+        // Arrays
         imagesFromImageViews.removeAll()
         plusImageViews.removeAll()
+        
+        // Dictionary
         userPhotosDictionary.removeAll()
         
         handleSwipeGestureRecognizer()
@@ -127,35 +130,13 @@ class InstagridViewController: UIViewController {
             plusImageViews.removeFromSuperview()
         }
         
-        // Reset tables
+        // Reset arrays
         whiteViews.removeAll()
         imageViews.removeAll()
         plusImageViews.removeAll()
         
         /// Reset tag
         tagImageView = 0
-    }
-    
-    /// Method for adding user images to the new grid from the userPhotosDictionary
-    private func addUserImagesToNewLayout() {
-        
-        for (tag, image) in userPhotosDictionary {
-            if tag + 1 > whiteViews.count {
-                continue
-            }
-            
-            imageViews[tag].image = image
-            imageViews[tag].subviews[0].removeFromSuperview()
-        }
-        
-    }
-    
-    /// Method for configuring buttons
-    private func setupLayoutButtons() {
-        for (index, button) in photoLayoutButtons.enumerated() {
-            button.tag = index
-            setupLayoutButtonImage(button: button)
-        }
     }
     
     /// Method to manage if the button is selected or not
@@ -166,59 +147,16 @@ class InstagridViewController: UIViewController {
     }
     
     /// Method to define button images
-    private func setupLayoutButtonImage(button: UIButton) {
-        button.setImage(nil, for: .normal)
-        button.setImage(UIImage(named: "Selected"), for: .selected)
-    }
-    
-    /// Method to define button images
     private func setupGridLayoutView(layout: PhotoLayout) {
         
         addWhiteViewsTo(stackView: gridTopStackView, numberOfViews: layout.numberOfTopView)
         addWhiteViewsTo(stackView: gridBotStackView, numberOfViews: layout.numberOfBotView)
+        
         addUserImagesToNewLayout()
         numberOfWhiteViews = whiteViews.count
         handleSwipeGestureRecognizer()
     }
-    
-    /// Method to to prevent the user from sharing an empty grid
-    private func handleSwipeGestureRecognizer() {
-        
-        guard !(numberOfWhiteViews == 3 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
-            handleStateSwipeGesture(state: "Off")
-            return
-        }
-        
-        guard !(numberOfWhiteViews == 4 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
-            handleStateSwipeGesture(state: "On")
-            return
-        }
-        
-        guard userPhotosDictionary.count >= 1 else {
-            handleStateSwipeGesture(state: "Off")
-            return
-        }
-        
-        guard userPhotosDictionary.count < 1 else {
-            handleStateSwipeGesture(state: "On")
-            return
-        }
-        
-    }
-    
-    /// Method to handle the state of the swipe gesture
-    private func handleStateSwipeGesture(state: String) {
-        guard let swipeToShareRecognizer = swipeToShareRecognizer else { return }
-        
-        if state == "On" {
-            stackViewGestureIndication.isHidden = false
-            swipeToShareRecognizer.isEnabled = true
-        } else {
-            stackViewGestureIndication.isHidden = true
-            swipeToShareRecognizer.isEnabled = false
-        }
-    }
-    
+
     /// Method to add the white views
     private func addWhiteViewsTo(stackView: UIStackView, numberOfViews: Int) {
         
@@ -250,12 +188,25 @@ class InstagridViewController: UIViewController {
     private func setupImageView(_ imageView: UIImageView, _ whiteView: UIView) {
         
         imageView.contentMode = .scaleToFill
+        
+        // Allows us to write out our own custom programmatic constraints
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             
             imageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor), imageView.heightAnchor.constraint(equalTo: whiteView.heightAnchor)
         ])
         
+    }
+    
+    /// Method to add tap gesture recognizer  to imageView
+    private func addTapGestureRecognizerToImageViews(imageView: UIImageView) {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView(sender:)))
+        
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        imageView.tag = tagImageView
+        
+        tagImageView += 1
     }
     
     /// Method to add plusImage to imageView
@@ -275,7 +226,9 @@ class InstagridViewController: UIViewController {
     /// Method to add constraints to plusImageView
     private func setupPlusImageViews(_ plusImageView: UIImageView, _ view: UIView) {
         
+        // Allows us to write out our own custom programmatic constraints
         plusImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             
             plusImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -284,30 +237,92 @@ class InstagridViewController: UIViewController {
         
     }
     
-    /// Method to add tap gesture recognizer  to imageView
-    private func addTapGestureRecognizerToImageViews(imageView: UIImageView) {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addPhotoToImageView(sender:)))
+    /// Method for adding user images to the new grid from the userPhotosDictionary
+    private func addUserImagesToNewLayout() {
         
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(tapGestureRecognizer)
-        imageView.tag = tagImageView
+        for (tag, image) in userPhotosDictionary {
+            
+            if tag + 1 > whiteViews.count {
+                continue
+            }
+            
+            imageViews[tag].image = image
+            
+            // To remove the plusImageView associated
+            imageViews[tag].subviews[0].removeFromSuperview()
+        }
         
-        tagImageView += 1
+    }
+    
+    /// Method for configuring buttons
+    private func setupLayoutButtons() {
+        for (index, button) in photoLayoutButtons.enumerated() {
+            button.tag = index
+            setupLayoutButtonImage(button: button)
+        }
+    }
+
+    /// Method to define button images
+    private func setupLayoutButtonImage(button: UIButton) {
+        button.setImage(nil, for: .normal)
+        button.setImage(UIImage(named: "Selected"), for: .selected)
+    }
+
+    /// Method to to prevent the user from sharing an empty grid
+    private func handleSwipeGestureRecognizer() {
+        
+        // To manage the state of the gesture when the user adds a photo in box number 4
+        guard !(numberOfWhiteViews == 3 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
+            handleStateSwipeGesture(state: "Off")
+            return
+        }
+        
+        // To manage the state of the gesture when the user adds a photo in box number 4
+        guard !(numberOfWhiteViews == 4 && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
+            handleStateSwipeGesture(state: "On")
+            return
+        }
+        
+        guard userPhotosDictionary.count >= 1 else {
+            handleStateSwipeGesture(state: "Off")
+            return
+        }
+        
+        guard userPhotosDictionary.count < 1 else {
+            handleStateSwipeGesture(state: "On")
+            return
+        }
+        
+    }
+    
+    /// Method to handle the state of the swipe gesture
+    private func handleStateSwipeGesture(state: String) {
+        guard let swipeToShareRecognizer = swipeToShareRecognizer else { return }
+        
+        if state == "On" {
+            stackViewGestureIndication.isHidden = false
+            swipeToShareRecognizer.isEnabled = true
+        } else {
+            stackViewGestureIndication.isHidden = true
+            swipeToShareRecognizer.isEnabled = false
+        }
     }
     
     /// Method to handle the UIActivityViewController
     private func handleTheActivityViewController() {
-        guard let ac = instagridActivityViewController else { return }
+        guard let instagridActivityViewController = instagridActivityViewController else { return }
+        
         // To present it
-        present(ac, animated: true, completion: nil)
+        present(instagridActivityViewController, animated: true, completion: nil)
         
         // To handle the completion
-        ac.completionWithItemsHandler = { _, _, _, _ in
+        instagridActivityViewController.completionWithItemsHandler = { _, _, _, _ in
             self.instagridActivityViewController?.dismiss(animated: true) {
                 self.startTheEndOfSharingAnimation()
             }
             return
         }
+        
     }
     
     /// Method to share the screenshot
@@ -331,7 +346,7 @@ class InstagridViewController: UIViewController {
         element.isHidden = true
     }
     
-    /// Method to take a screenshot of mainsquare view
+    /// Method to take a screenshot of gridPhotoLayoutContainerView
     private func screenShotMethod() -> UIImage? {
         let renderer = UIGraphicsImageRenderer(size: gridPhotoLayoutContainerView.bounds.size)
         let image = renderer.image { ctx in
@@ -353,22 +368,37 @@ class InstagridViewController: UIViewController {
     
     /// Method to start the animation according to the orientation of the iPhone
     private func startSharingAnimation() {
-        deviceIsPortraitMode ? UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+        deviceIsPortraitMode ?
+            
+            // Animation for portrait mode
+            UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
             
             self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: 0, dy: -UIScreen.main.bounds.maxY)
-        }.startAnimation() : UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+        }.startAnimation()
+            
+            :
+            
+            // Animation for landscape mode
+            UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
             
             self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: -UIScreen.main.bounds.maxX, dy: 0)
         }.startAnimation()
+        
     }
     
     /// Method to start the reverse animation according to the orientation of the iPhone
     private func startTheEndOfSharingAnimation() {
         
-        deviceIsPortraitMode ? UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+        deviceIsPortraitMode ?
+            
+            UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
             
             self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: 0, dy: UIScreen.main.bounds.maxY)
-        }.startAnimation() : UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+        }.startAnimation()
+            
+            :
+            
+            UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
             
             self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: UIScreen.main.bounds.maxX, dy: 0)
             
@@ -379,7 +409,9 @@ class InstagridViewController: UIViewController {
     
     /// Method to add the photos selected by the user in the view
     @objc private func addPhotoToImageView(sender: UITapGestureRecognizer) {
+        
         guard let viewTag = sender.view?.tag else { return }
+        
         let clickedView = imageViews[viewTag]
         
         CameraHandler.shared.showActionSheet(viewController: self)
@@ -387,12 +419,15 @@ class InstagridViewController: UIViewController {
             
             clickedView.image = image
             
+            // To remove the plusImageView
             for plusImageView in clickedView.subviews where clickedView.subviews.count > 0 {
                 plusImageView.removeFromSuperview()
             }
             
             self.userPhotosDictionary[viewTag] = image
             self.handleSwipeGestureRecognizer()
+            
+            // I add the image to the array
             self.imagesFromImageViews.append(image)
         }
         
