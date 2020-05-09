@@ -6,7 +6,7 @@
 //  Copyright © 2020 Sébastien Kothé. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 struct PhotoLayout {
     let numberOfTopView: Int

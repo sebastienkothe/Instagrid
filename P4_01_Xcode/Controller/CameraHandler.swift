@@ -12,7 +12,6 @@ import UIKit
 class CameraHandler: NSObject {
     
     //MARK: Internal Properties
-    static let shared = CameraHandler()
     var imagePickedBlock: ((UIImage) -> Void)?
     
     // MARK: - Internal methods
@@ -36,29 +35,26 @@ class CameraHandler: NSObject {
     }
     
     //MARK: File private Properties
-    fileprivate var currentViewController: UIViewController!
+    private var currentViewController: UIViewController!
     
     //MARK: Private methods
     
     private func camera() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            let myPickerController = UIImagePickerController()
-            myPickerController.delegate = self;
-            myPickerController.sourceType = .camera
-            myPickerController.allowsEditing = true
-            currentViewController.present(myPickerController, animated: true, completion: nil)
-        }
+        presentImageControllerWith(sourceType: .camera)
     }
     
     private func photoLibrary() {
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            let myPickerController = UIImagePickerController()
-            myPickerController.delegate = self;
-            myPickerController.sourceType = .photoLibrary
-            myPickerController.allowsEditing = true
-            currentViewController.present(myPickerController, animated: true, completion: nil)
+        presentImageControllerWith(sourceType: .photoLibrary)
+    }
+    
+    private func presentImageControllerWith(sourceType: UIImagePickerController.SourceType) {
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = sourceType
+            imagePickerController.allowsEditing = true
+            currentViewController.present(imagePickerController, animated: true, completion: nil)
         }
-        
     }
     
 }
@@ -80,4 +76,3 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     }
     
 }
-
