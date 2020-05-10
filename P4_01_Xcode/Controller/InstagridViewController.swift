@@ -31,7 +31,7 @@ class InstagridViewController: UIViewController {
     
     /// ActivityViewController. Used to share the grid
     private var instagridActivityViewController: UIActivityViewController?
- 
+    
     
     /// Determinate the interface orientation
     private var windowInterfaceOrientation: UIInterfaceOrientation? {
@@ -74,7 +74,7 @@ class InstagridViewController: UIViewController {
             swipeToShareRecognizer?.direction = deviceIsPortraitMode ? .up : .left
         }
     }
-
+    
     // MARK: Private action
     @IBAction private func didTapOnLayoutButton(_ sender: UIButton) {
         
@@ -83,7 +83,7 @@ class InstagridViewController: UIViewController {
         handlePhotoLayoutButtonSelection(selectedTag: sender.tag)
         
         let layout = photoLayoutProvider.photoLayouts[sender.tag]
-
+        
         setupGridLayoutView(layout: layout)
     }
     
@@ -117,14 +117,12 @@ class InstagridViewController: UIViewController {
             view.removeFromSuperview()
         }
         
-     
-        
         // Reset arrays
         whiteViews.removeAll()
         imageViews.removeAll()
         plusImageViews.removeAll()
         
-        /// Reset tag
+        // Reset the tag of imageView
         tagImageView = 0
     }
     
@@ -146,7 +144,7 @@ class InstagridViewController: UIViewController {
         numberOfWhiteViews = whiteViews.count
         handleSwipeGestureRecognizer()
     }
-
+    
     /// Method to add the white views
     private func addWhiteViewsTo(stackView: UIStackView, numberOfViews: Int) {
         
@@ -251,30 +249,24 @@ class InstagridViewController: UIViewController {
             setupLayoutButtonImage(button: button)
         }
     }
-
+    
     /// Method to define button images
     private func setupLayoutButtonImage(button: UIButton) {
         button.setImage(nil, for: .normal)
         button.setImage(UIImage(named: "Selected"), for: .selected)
     }
-
+    
     /// Method to to prevent the user from sharing an empty grid
     private func handleSwipeGestureRecognizer() {
-            
+        
         // To manage the state of the gesture when the user adds a photo in box number 4
-        guard !(
-                numberOfWhiteViews == 3 &&
-                    
-                userPhotosDictionary.count == 1 &&
-                userPhotosDictionary.index(forKey: 3) != nil
-            ) else {
+        guard !(numberOfWhiteViews == 3 && userPhotosDictionary.count == 1 && userPhotosDictionary.index(forKey: 3) != nil) else {
             handleSwipeToShareGestureState(isActivated: false)
             return
         }
         
         // To manage the state of the gesture when the user adds a photo in box number 4
-        guard !(numberOfWhiteViews == 4
-            && userPhotosDictionary.count == 1 &&  userPhotosDictionary.index(forKey: 3) != nil) else {
+        guard !(numberOfWhiteViews == 4 && userPhotosDictionary.count == 1 && userPhotosDictionary.index(forKey: 3) != nil) else {
             handleSwipeToShareGestureState(isActivated: true)
             return
         }
@@ -285,7 +277,6 @@ class InstagridViewController: UIViewController {
         }
         
         handleSwipeToShareGestureState(isActivated: true)
-        
         
     }
     
@@ -303,7 +294,7 @@ class InstagridViewController: UIViewController {
         
         // To present it
         present(instagridActivityViewController, animated: true, completion: nil)
-    
+        
         // To handle the completion
         instagridActivityViewController.completionWithItemsHandler = { [weak self] _, _, _, _ in
             self?.instagridActivityViewController?.dismiss(animated: true) {
@@ -320,9 +311,10 @@ class InstagridViewController: UIViewController {
         
         switch swipeToShareRecognizer.state {
         case .ended:
+            
             if let renderedImage = getGridViewAsScreenShot() {
-                instagridActivityViewController = UIActivityViewController(
-                    activityItems: [renderedImage],
+                
+                instagridActivityViewController = UIActivityViewController(activityItems: [renderedImage],
                     applicationActivities: nil)
                 
                 handleTheActivityViewController()
@@ -333,12 +325,7 @@ class InstagridViewController: UIViewController {
             break
         }
     }
-    
-    /// Method to share an UIView
-    private func hide(_ element: UIView) {
-        element.isHidden = true
-    }
-    
+
     let cameraHandler = CameraHandler()
     
     /// Method to take a screenshot of gridPhotoLayoutContainerView
@@ -353,7 +340,7 @@ class InstagridViewController: UIViewController {
     
     /// Method to initialize the swipe gesture recognizer
     private func initializeSwipeGesture() {
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(ManageActionsAfterSwipeGestureDetection(_:)))
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(manageActionsAfterSwipeGestureDetection(_:)))
         swipeToShareRecognizer = swipeGesture
         gridPhotoLayoutContainerView.addGestureRecognizer(swipeGesture)
         
@@ -368,18 +355,18 @@ class InstagridViewController: UIViewController {
             
             // Animation for portrait mode
             UIViewPropertyAnimator(duration: 0.5, curve: .linear) { [weak self] in
-            guard let self = self else { return }
-            
-            self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: 0, dy: -UIScreen.main.bounds.maxY)
-        }.startAnimation()
+                guard let self = self else { return }
+                
+                self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: 0, dy: -UIScreen.main.bounds.maxY)
+            }.startAnimation()
             
             :
             
             // Animation for landscape mode
             UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-            
-            self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: -UIScreen.main.bounds.maxX, dy: 0)
-        }.startAnimation()
+                
+                self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: -UIScreen.main.bounds.maxX, dy: 0)
+            }.startAnimation()
         
     }
     
@@ -389,17 +376,17 @@ class InstagridViewController: UIViewController {
         deviceIsPortraitMode ?
             
             UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-            
-            self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: 0, dy: UIScreen.main.bounds.maxY)
-        }.startAnimation()
+                
+                self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: 0, dy: UIScreen.main.bounds.maxY)
+            }.startAnimation()
             
             :
             
             UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-            
-            self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: UIScreen.main.bounds.maxX, dy: 0)
-            
-        }.startAnimation()
+                
+                self.gridPhotoLayoutContainerView.frame = self.gridPhotoLayoutContainerView.frame.offsetBy(dx: UIScreen.main.bounds.maxX, dy: 0)
+                
+            }.startAnimation()
     }
     
     // MARK: @objc Private methods
@@ -431,7 +418,7 @@ class InstagridViewController: UIViewController {
     }
     
     /// Method to launch the swipe gesture animation
-    @objc private func ManageActionsAfterSwipeGestureDetection(_ sender: UISwipeGestureRecognizer) {
+    @objc private func manageActionsAfterSwipeGestureDetection(_ sender: UISwipeGestureRecognizer) {
         startSharingAnimation()
         shareContentOfTheGrid()
     }
@@ -440,10 +427,12 @@ class InstagridViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         
-        cleanGridButton.isHidden = true
         initializeSwipeGesture()
-        hide(stackViewGestureIndication)
+        handleSwipeGestureRecognizer()
         setupLayoutButtons()
+        
+        // To round the clean grid button
+        cleanGridButton.layer.cornerRadius = cleanGridButton.frame.width / 2
     }
     
     /// Method to manage the behavior of the application when the user changes the orientation of his phone

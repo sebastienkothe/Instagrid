@@ -19,6 +19,7 @@ class CameraHandler: NSObject {
     /// Method that allows the user to select a photo from their photo library or to use the phone camera
     func showActionSheet(viewController: UIViewController) {
         currentViewController = viewController
+        
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alert:UIAlertAction!) -> Void in
