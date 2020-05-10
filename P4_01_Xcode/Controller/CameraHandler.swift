@@ -12,6 +12,7 @@ import UIKit
 class CameraHandler: NSObject {
     
     //MARK: Internal Properties
+    
     var imagePickedBlock: ((UIImage) -> Void)?
     
     // MARK: - Internal methods
@@ -35,7 +36,8 @@ class CameraHandler: NSObject {
         viewController.present(actionSheet, animated: true, completion: nil)
     }
     
-    //MARK: File private Properties
+    //MARK: Private Properties
+    
     private var currentViewController: UIViewController!
     
     //MARK: Private methods
